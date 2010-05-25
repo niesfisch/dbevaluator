@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mongodb.DB;
 import com.mongodb.Mongo;
 
 import de.marcelsauer.dbevaluator.TimedDbEvaluation.SingleResult;
@@ -56,8 +57,10 @@ public class DbEvaluatorTest {
     }
 
     private DbEvaluation createMongoDbEvaluation(Blog blog) throws Exception {
-        Mongo mongo = new Mongo("localhost", 27017);
-        MongoDbBlogDao mongoDao = new MongoDbBlogDao(mongo);
+        Mongo mongo = new Mongo(Config.MongoDb.DB_SERVER, Config.MongoDb.DB_SERVER_PORT);
+        DB db = mongo.getDB(Config.MongoDb.DB_NAME);
+
+        MongoDbBlogDao mongoDao = new MongoDbBlogDao(db);
         DbEvaluation mongoEval = new MongoDbEvaluation(mongoDao, blog);
         return mongoEval;
     }

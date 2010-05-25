@@ -14,12 +14,19 @@ public interface BlogDao {
      * @param blog
      *            to persist, must not be null
      */
-    void persist(Blog blog);
+    void persistOrUpdate(Blog blog);
 
     /**
      * @return the blog
-     * @param name
+     * @param title
      *            of the blog to load
      */
-    Blog load(String name);
+    Blog load(String title);
+    
+    
+    /**
+     * @param title of the blog to delete
+     * @return blog that was deleted
+     */
+    Blog delete(String title);
 }

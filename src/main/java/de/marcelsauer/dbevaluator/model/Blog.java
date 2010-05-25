@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Blog {
 
-    private final String title;
-    private final List<Post> posts = new ArrayList<Post>();
+    public String title;
+    public List<Post> posts = new ArrayList<Post>();
 
     public Blog(String title) {
         this.title = title;

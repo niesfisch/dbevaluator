@@ -15,6 +15,6 @@ public class MongoDbEvaluation implements DbEvaluation {
 
     @Override
     public void run() {
-        mongoDao.persist(blog);
+        // do everything....
     }
 }
