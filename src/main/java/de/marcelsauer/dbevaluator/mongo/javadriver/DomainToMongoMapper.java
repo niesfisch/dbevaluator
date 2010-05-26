@@ -30,7 +30,7 @@ import de.marcelsauer.dbevaluator.model.Post;
  */
 public class DomainToMongoMapper {
 
-	public DBObject map(Post post) {
+	public DBObject toPersistablePost(Post post) {
 		DBObject mapped = new BasicDBObject();
 		mapped.put(Constants.AUTHOR, post.author);
 		mapped.put(Constants.CONTENT, post.content);
@@ -39,18 +39,18 @@ public class DomainToMongoMapper {
 		return mapped;
 	}
 
-	public Collection<DBObject> map(Collection<Post> posts) {
+	public Collection<DBObject> toPersistablePosts(Collection<Post> posts) {
 		List<DBObject> mapped = new ArrayList<DBObject>();
 		for (Post post : posts) {
-			mapped.add(map(post));
+			mapped.add(toPersistablePost(post));
 		}
 		return mapped;
 	}
 
-	public DBObject map(Blog blog) {
+	public DBObject toPersistableBlog(Blog blog) {
 		DBObject mapped = new BasicDBObject();
 		mapped.put(Constants.TITLE_KEY, blog.title);
-		mapped.put(Constants.POSTS_KEY, map(blog.posts));
+		mapped.put(Constants.POSTS_KEY, toPersistablePosts(blog.posts));
 		return mapped;
 	}
 

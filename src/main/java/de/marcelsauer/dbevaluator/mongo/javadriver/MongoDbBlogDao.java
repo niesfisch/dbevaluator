@@ -54,7 +54,7 @@ public class MongoDbBlogDao implements BlogDao {
 		
 		Blog existing = load(blog.title);
 
-		DBObject mappedBlog = toMongo.map(blog);
+		DBObject mappedBlog = toMongo.toPersistableBlog(blog);
 		if (existing == null) {
 			getBlogs().save(mappedBlog);
 		} else {
