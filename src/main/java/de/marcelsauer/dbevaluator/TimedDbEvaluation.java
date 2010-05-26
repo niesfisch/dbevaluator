@@ -41,29 +41,42 @@ public class TimedDbEvaluation implements DbEvaluation {
 
     @Override
     public void run() {
-        combinedResult = new Result();
-
         for (DbEvaluation evaluation : evaluations) {
-            stopWatch.reset();
-            stopWatch.start();
-
-            log.debug("running " + evaluation.getClass().getSimpleName() + " evaluation");
-            NDC.push("     ");
-            
-            evaluation.run();
-            
-            NDC.pop();
-
-            stopWatch.stop();
-
-            combinedResult.durationMillis += stopWatch.durationTimeMillis();
-
-            Result result = new Result();
-            result.durationMillis = stopWatch.durationTimeMillis();
-
-            singleResults.add(new SingleResult(result, evaluation));
+        	beforeRun(evaluation);
+            run(evaluation);
+            afterRun(evaluation);
         }
     }
+
+	private void afterRun(DbEvaluation evaluation) {
+		NDC.pop();
+		
+		long durationTimeMillis = stopWatch.durationTimeMillis();
+		log.debug("finished  " + evaluation.getClass().getSimpleName() + " in " + durationTimeMillis + " (ms)");
+
+		combinedResult = new Result();
+		combinedResult.durationMillis += durationTimeMillis;
+
+		Result result = new Result();
+		result.durationMillis = durationTimeMillis;
+
+		singleResults.add(new SingleResult(result, evaluation));
+	}
+
+	private void beforeRun(DbEvaluation evaluation) {
+		String evaluationName = evaluation.getClass().getSimpleName();
+		log.debug("running " + evaluationName + " evaluation");
+		NDC.push("     ");
+	}
+
+	private void run(DbEvaluation evaluation) {
+		stopWatch.reset();
+		stopWatch.start();
+		
+		evaluation.run();
+		
+		stopWatch.stop();
+	}
 
     public class SingleResult {
         public final Result result;

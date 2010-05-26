@@ -1,5 +1,7 @@
 package de.marcelsauer.dbevaluator.mongo.javadriver;
 
+import java.util.Collection;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -11,14 +13,14 @@ import de.marcelsauer.dbevaluator.model.Blog;
  * 
  * This file is part of DB Evaluator.
  * 
- * DB Evaluator is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or (at your option) any
- * later version.
+ * DB Evaluator is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  * 
- * DB Evaluator is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * DB Evaluator is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
  * 
  * You should have received a copy of the GNU General Public License along with
@@ -27,20 +29,24 @@ import de.marcelsauer.dbevaluator.model.Blog;
 public class MongoDbEvaluation implements DbEvaluation {
 
 	private static final Log log = LogFactory.getLog(MongoDbEvaluation.class);
-    private final MongoDbBlogDao mongoDao;
-    private final Blog blog;
+	private final MongoDbBlogDao mongoDao;
+	private Collection<Blog> blogs;
 
-    public MongoDbEvaluation(MongoDbBlogDao mongoDao, Blog blog) {
-        this.mongoDao = mongoDao;
-        this.blog = blog;
-    }
+	public MongoDbEvaluation(MongoDbBlogDao mongoDao, Collection<Blog> blogs) {
+		this.mongoDao = mongoDao;
+		this.blogs = blogs;
+	}
 
-    @Override
-    public void run() {
-    	log.debug("trying to persist blog");
-        mongoDao.persistOrUpdate(this.blog);
-        
-        log.debug("trying to load blog");
-        Blog blogFromDb = mongoDao.load(this.blog.title);
-    }
+	@Override
+	public void run() {
+		for (Blog blog : blogs) {
+			mongoDao.persistOrUpdate(blog);
+			log.debug("persisted blog '" + blog.title + "' to db.");
+		}
+
+		for (Blog blog : blogs) {
+			Blog blogFromDb = mongoDao.load(blog.title);
+			log.debug("loaded blog: '" + blog.title + "' from db. values: " + blog);
+		}
+	}
 }

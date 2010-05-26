@@ -48,7 +48,7 @@ public class StopWatch {
             throw new IllegalStateException("start watch first!");
         }
         state = State.STOPPED;
-        start = System.currentTimeMillis();
+        end = System.currentTimeMillis();
     }
 
     public long durationTimeMillis() {
