@@ -3,7 +3,6 @@ package de.marcelsauer.dbevaluator;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.marcelsauer.dbevaluator.mongo.StopWatch;
 
 public class TimedDbEvaluation implements DbEvaluation {
 

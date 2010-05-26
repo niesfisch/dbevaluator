@@ -1,4 +1,4 @@
-package de.marcelsauer.dbevaluator.mongo;
+package de.marcelsauer.dbevaluator.mongo.javadriver;
 
 import de.marcelsauer.dbevaluator.DbEvaluation;
 import de.marcelsauer.dbevaluator.model.Blog;

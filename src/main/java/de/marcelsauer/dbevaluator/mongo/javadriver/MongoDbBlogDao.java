@@ -1,4 +1,4 @@
-package de.marcelsauer.dbevaluator.mongo;
+package de.marcelsauer.dbevaluator.mongo.javadriver;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;

@@ -14,6 +14,7 @@ import de.marcelsauer.dbevaluator.BlogDao;
 import de.marcelsauer.dbevaluator.Config;
 import de.marcelsauer.dbevaluator.model.Blog;
 import de.marcelsauer.dbevaluator.model.Post;
+import de.marcelsauer.dbevaluator.mongo.javadriver.MongoDbBlogDao;
 
 public class MongoDbBlogDaoTest {
 

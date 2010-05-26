@@ -1,4 +1,4 @@
-package de.marcelsauer.dbevaluator.mongo;
+package de.marcelsauer.dbevaluator;
 
 public class StopWatch {
 

@@ -11,9 +11,8 @@ import com.mongodb.Mongo;
 import de.marcelsauer.dbevaluator.TimedDbEvaluation.SingleResult;
 import de.marcelsauer.dbevaluator.model.Blog;
 import de.marcelsauer.dbevaluator.model.Post;
-import de.marcelsauer.dbevaluator.mongo.MongoDbBlogDao;
-import de.marcelsauer.dbevaluator.mongo.MongoDbEvaluation;
-import de.marcelsauer.dbevaluator.mongo.StopWatch;
+import de.marcelsauer.dbevaluator.mongo.javadriver.MongoDbBlogDao;
+import de.marcelsauer.dbevaluator.mongo.javadriver.MongoDbEvaluation;
 
 public class DbEvaluatorTest {
 
