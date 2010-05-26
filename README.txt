@@ -1,3 +1,4 @@
+
 1. install maven
 2. mkdir playground; cd playgroud
 3. svn checkout http://couchdb4j.googlecode.com/svn/trunk/ couchdb4j-read-only
