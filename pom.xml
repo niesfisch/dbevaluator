@@ -36,6 +36,11 @@
 			<artifactId>jcouchdb</artifactId>
 			<version>0.11.0-1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jredis</groupId>
+			<artifactId>jredis-core-all</artifactId>
+			<version>a.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
