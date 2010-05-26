@@ -9,66 +9,67 @@ import de.marcelsauer.dbevaluator.BlogDao;
 import de.marcelsauer.dbevaluator.model.Blog;
 
 /**
- * mongo db implementation
+ * DB Evaluator Copyright (C) 2010 Marcel Sauer <marcel DOT sauer AT gmx DOT de>
  * 
- * @author msauer
+ * This file is part of DB Evaluator.
  * 
+ * DB Evaluator is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * 
+ * DB Evaluator is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * DB Evaluator. If not, see <http://www.gnu.org/licenses/>.
  */
 public class MongoDbBlogDao implements BlogDao {
 
-    private static final String POSTS_KEY = "posts";
-    private static final String TITLE_KEY = "title";
-    private static final String COLLECTION_NAME = "blogs";
-    private final DB db;
+	private final DB db;
+	private DomainToMongoMapper toMongo = new DomainToMongoMapper();
+	private MongoToDomainMapper fromMongo = new MongoToDomainMapper();
 
-    public MongoDbBlogDao(DB db) {
-        this.db = db;
-    }
+	public MongoDbBlogDao(DB db) {
+		this.db = db;
+	}
 
-    @Override
-    public Blog load(String title) {
-        DBCollection blogs = getBlogs();
-        DBObject matcher = new BasicDBObject(TITLE_KEY, title);
-        DBObject blog = blogs.findOne(matcher);
-        return map(blog);
-    }
+	@Override
+	public Blog load(String title) {
+		DBCollection blogs = getBlogs();
+		DBObject matcher = new BasicDBObject(Constants.TITLE_KEY, title);
+		DBObject blog = blogs.findOne(matcher);
+		return (blog != null) ? fromMongo.toBlog(blog) : null;
+	}
 
-    @Override
-    public void persistOrUpdate(Blog blog) {
+	@Override
+	public void persistOrUpdate(Blog blog) {
+		Blog existing = load(blog.title);
 
-        DBObject blogObject = new BasicDBObject();
-        blogObject.put(TITLE_KEY, blog.title);
-        blogObject.put(POSTS_KEY, blog.posts);
-        
-        Blog existing = load(blog.title);
-        
-        if (existing == null) {
-            getBlogs().save(blogObject);
-        } else {
-            DBObject matching = new BasicDBObject(TITLE_KEY, blog.title);
-            getBlogs().update(matching, blogObject, true, true);
-        }
-    }
+		DBObject mappedBlog = toMongo.map(blog);
+		if (existing == null) {
+			getBlogs().save(mappedBlog);
+		} else {
+			DBObject matching = new BasicDBObject(Constants.TITLE_KEY,
+					blog.title);
+			getBlogs().update(matching, mappedBlog, true, true);
+		}
+	}
 
-    @Override
-    public Blog delete(String title) {
-        Blog blog = load(title);
+	@Override
+	public Blog delete(String title) {
+		Blog blog = load(title);
 
-        DBObject toRemove = new BasicDBObject(TITLE_KEY, title);
-        getBlogs().remove(toRemove);
+		DBObject toRemove = new BasicDBObject(Constants.TITLE_KEY, title);
+		getBlogs().remove(toRemove);
 
-        return blog;
-    }
+		return blog;
+	}
 
-    private DBCollection getBlogs() {
-        return db.getCollection(COLLECTION_NAME);
-    }
-
-    private Blog map(DBObject blog) {
-        Blog mapped = new Blog((String) blog.get(TITLE_KEY));
-        // get posts
-        mapped.posts.add(null);
-        return mapped;
-    }
+	private DBCollection getBlogs() {
+		return db.getCollection(Constants.COLLECTION_NAME);
+	}
 
 }

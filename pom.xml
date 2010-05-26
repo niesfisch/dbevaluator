@@ -4,10 +4,10 @@
 
 	<groupId>de.marcelsauer</groupId>
 	<artifactId>dbevaluator</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>mongodb</name>
+	<name>dbevaluator</name>
 	<url>http://www.marcel-sauer.de</url>
 
 	<properties>
@@ -40,6 +40,13 @@
 			<groupId>org.jredis</groupId>
 			<artifactId>jredis-core-all</artifactId>
 			<version>a.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

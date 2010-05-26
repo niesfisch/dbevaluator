@@ -3,9 +3,31 @@ package de.marcelsauer.dbevaluator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.NDC;
 
+/**
+ * DB Evaluator Copyright (C) 2010 Marcel Sauer <marcel DOT sauer AT gmx DOT de>
+ * 
+ * This file is part of DB Evaluator.
+ * 
+ * DB Evaluator is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * 
+ * DB Evaluator is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * DB Evaluator. If not, see <http://www.gnu.org/licenses/>.
+ */
 public class TimedDbEvaluation implements DbEvaluation {
 
+	private static final Log log = LogFactory.getLog(TimedDbEvaluation.class);
     public final List<SingleResult> singleResults = new ArrayList<SingleResult>();
     public Result combinedResult;
 
@@ -19,13 +41,18 @@ public class TimedDbEvaluation implements DbEvaluation {
 
     @Override
     public void run() {
-        Result combinedResult = new Result();
+        combinedResult = new Result();
 
         for (DbEvaluation evaluation : evaluations) {
             stopWatch.reset();
             stopWatch.start();
 
+            log.debug("running " + evaluation.getClass().getSimpleName() + " evaluation");
+            NDC.push("     ");
+            
             evaluation.run();
+            
+            NDC.pop();
 
             stopWatch.stop();
 
