@@ -55,11 +55,12 @@ public class DbEvaluatorTest {
 	private void dumpResults(TimedDbEvaluation timedEvaluation) {
 		List<SingleResult> singleResults = timedEvaluation.singleResults;
 
-		log.info("total time taken (ms): " + timedEvaluation.combinedResult.durationMillis);
+		System.out.println();
+		System.out.println("total time taken (ms): " + timedEvaluation.combinedResult.durationMillis);
 		for (SingleResult singleResult : singleResults) {
 			long durationMillis = singleResult.result.durationMillis;
 			String evaluator = singleResult.evaluation.getClass().getSimpleName();
-			log.info(evaluator + "  " + durationMillis + " (ms)");
+			System.out.println(evaluator + "  " + durationMillis + " (ms)");
 		}
 	}
 
