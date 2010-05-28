@@ -50,14 +50,14 @@ public abstract class AbstractDbEvaluatorTest {
 	 * @return the number of blogs to be created, subclasses are free to
 	 *         override
 	 */
-	protected int amountOfBlogsToCreate() {
-		return AMOUNT_POSTS;
+	protected int numberOfBlogsToCreate() {
+		return AMOUNT_BLOGS;
 	}
 
 	/**
 	 * @return the amount of posts per blog that should be created
 	 */
-	protected int amountOfPostsPerBlogToBeCreated() {
+	protected int numberOfPostsPerBlogToBeCreated() {
 		return AMOUNT_POSTS;
 	}
 
@@ -90,9 +90,9 @@ public abstract class AbstractDbEvaluatorTest {
 
 	private Collection<Blog> createBlog() {
 		Collection<Blog> blogs = new ArrayList<Blog>();
-		for (int blogNr = 1; blogNr <= amountOfBlogsToCreate(); blogNr++) {
+		for (int blogNr = 1; blogNr <= numberOfBlogsToCreate(); blogNr++) {
 			Blog blog = new Blog("the mighty db evaluation " + blogNr);
-			for (int postNr = 1; postNr <= amountOfPostsPerBlogToBeCreated(); postNr++) {
+			for (int postNr = 1; postNr <= numberOfPostsPerBlogToBeCreated(); postNr++) {
 				Post post = new Post();
 				post.date = new Date();
 				post.author = "Marcel";

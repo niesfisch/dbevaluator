@@ -34,13 +34,12 @@ public class MongoDbEvaluatorTest extends AbstractDbEvaluatorTest {
 
 	
 	@Override
-	protected int amountOfBlogsToCreate() {
+	protected int numberOfBlogsToCreate() {
 		return 10;
 	}
 
-
 	@Override
-	protected int amountOfPostsPerBlogToBeCreated() {
+	protected int numberOfPostsPerBlogToBeCreated() {
 		return 100;
 	}
 

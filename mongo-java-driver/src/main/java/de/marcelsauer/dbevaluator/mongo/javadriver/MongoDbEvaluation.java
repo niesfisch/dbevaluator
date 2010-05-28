@@ -4,9 +4,11 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.NDC;
 
 import de.marcelsauer.dbevaluator.DbEvaluation;
 import de.marcelsauer.dbevaluator.model.Blog;
+import de.marcelsauer.dbevaluator.model.Post;
 
 /**
  * DB Evaluator Copyright (C) 2010 Marcel Sauer <marcel DOT sauer AT gmx DOT de>
@@ -47,6 +49,11 @@ public class MongoDbEvaluation implements DbEvaluation {
 		for (Blog blog : blogs) {
 			Blog blogFromDb = mongoDao.load(blog.title);
 			log.debug("loaded blog: '" + blog.title + "' with id: " + blogFromDb.id);
+			NDC.push("     ");
+			for (Post post : blogFromDb.posts) {
+				log.debug("loaded post with content '" + post.content + "'");
+			}
+			NDC.pop();
 		}
 	}
 }
