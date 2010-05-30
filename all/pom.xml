@@ -10,11 +10,11 @@
 	<name>all</name>
 
 	<modules>
-		<module>mongo-java-driver</module>
-		<module>couchdb4j</module>
-		<module>jcouchdb</module>
-		<module>jredis</module>
-		<module>neo4j</module>
+		<module>../mongo-java-driver</module>
+		<module>../couchdb4j</module>
+		<module>../jcouchdb</module>
+		<module>../jredis</module>
+		<module>../neo4j</module>
 	</modules>
 
 	<build>
@@ -30,6 +30,21 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>test-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
 	</build>
 
 	<dependencies>

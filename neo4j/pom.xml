@@ -10,9 +10,8 @@
 	<groupId>de.marcelsauer.dbevaluator</groupId>
 	<artifactId>neo4j</artifactId>
 	<packaging>jar</packaging>
-
 	<name>neo4j</name>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.neo4j</groupId>
@@ -22,7 +21,7 @@
 		<dependency>
 			<groupId>de.marcelsauer.dbevaluator</groupId>
 			<artifactId>core</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

@@ -15,7 +15,7 @@
 	<name>Mongo</name>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
@@ -24,7 +24,13 @@
 		<dependency>
 			<groupId>de.marcelsauer.dbevaluator</groupId>
 			<artifactId>core</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
+			<classifier>tests</classifier>
+		</dependency>
+		<dependency>
+			<groupId>de.marcelsauer.dbevaluator</groupId>
+			<artifactId>core</artifactId>
+			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

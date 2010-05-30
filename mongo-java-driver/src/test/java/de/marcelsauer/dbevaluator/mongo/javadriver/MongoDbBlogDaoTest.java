@@ -1,4 +1,4 @@
-package de.marcelsauer.dbevaluator.mongo;
+package de.marcelsauer.dbevaluator.mongo.javadriver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

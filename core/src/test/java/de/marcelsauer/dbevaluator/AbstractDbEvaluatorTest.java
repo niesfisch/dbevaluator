@@ -37,7 +37,7 @@ public abstract class AbstractDbEvaluatorTest {
 	private static final int AMOUNT_BLOGS = 1;
 	private static final Log log = LogFactory.getLog(AbstractDbEvaluatorTest.class);
 
-	abstract DbEvaluation createDbEvaluation(Collection<Blog> blogs) throws Exception;
+	public abstract DbEvaluation createDbEvaluation(Collection<Blog> blogs) throws Exception;
 
 	@Test
 	public void runAll() throws Exception {
