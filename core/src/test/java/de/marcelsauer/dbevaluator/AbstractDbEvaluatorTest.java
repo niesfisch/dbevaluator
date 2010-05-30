@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
 import de.marcelsauer.dbevaluator.TimedDbEvaluation.SingleResult;
@@ -35,14 +33,15 @@ public abstract class AbstractDbEvaluatorTest {
 
 	private static final int AMOUNT_POSTS = 2;
 	private static final int AMOUNT_BLOGS = 1;
-	private static final Log log = LogFactory.getLog(AbstractDbEvaluatorTest.class);
 
 	public abstract DbEvaluation createDbEvaluation(Collection<Blog> blogs) throws Exception;
 
+	private final CapturingLoggingCallback logCallback = new CapturingLoggingCallback();
+
 	@Test
-	public void runAll() throws Exception {
+	public void runSingleEvaluation() throws Exception {
 		TimedDbEvaluation timedEvaluation = getTimedEvaluationToRun();
-		timedEvaluation.run();
+		timedEvaluation.run(logCallback);
 		dumpResults(timedEvaluation);
 	}
 
@@ -62,14 +61,26 @@ public abstract class AbstractDbEvaluatorTest {
 	}
 
 	private void dumpResults(TimedDbEvaluation timedEvaluation) {
-		List<SingleResult> singleResults = timedEvaluation.singleResults;
+		dumpCapturedOutput();
+		dumpEvaluationResults(timedEvaluation);
+	}
 
-		System.out.println();
+	private void dumpEvaluationResults(TimedDbEvaluation timedEvaluation) {
+		List<SingleResult> singleResults = timedEvaluation.singleResults;
+		System.out.println("total number of blogs processed: " + numberOfBlogsToCreate());
+		System.out.println("total number of posts processed: " + numberOfBlogsToCreate() * numberOfPostsPerBlogToBeCreated());
 		System.out.println("total time taken (ms): " + timedEvaluation.combinedResult.durationMillis);
 		for (SingleResult singleResult : singleResults) {
 			long durationMillis = singleResult.result.durationMillis;
 			String evaluator = singleResult.evaluation.getClass().getSimpleName();
 			System.out.println(evaluator + "  " + durationMillis + " (ms)");
+		}
+	}
+
+	private void dumpCapturedOutput() {
+		System.out.println("captured output during runtime:");
+		for (String toLog : logCallback.getCaptured()) {
+			System.out.println(toLog);
 		}
 	}
 

@@ -2,11 +2,10 @@ package de.marcelsauer.dbevaluator.mongo.javadriver;
 
 import java.util.Collection;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.NDC;
 
 import de.marcelsauer.dbevaluator.DbEvaluation;
+import de.marcelsauer.dbevaluator.LoggingCallback;
 import de.marcelsauer.dbevaluator.model.Blog;
 import de.marcelsauer.dbevaluator.model.Post;
 
@@ -30,7 +29,6 @@ import de.marcelsauer.dbevaluator.model.Post;
  */
 public class MongoDbEvaluation implements DbEvaluation {
 
-	private static final Log log = LogFactory.getLog(MongoDbEvaluation.class);
 	private final MongoDbBlogDao mongoDao;
 	private Collection<Blog> blogs;
 
@@ -40,20 +38,20 @@ public class MongoDbEvaluation implements DbEvaluation {
 	}
 
 	@Override
-	public void run() {
+	public void run(LoggingCallback log) {
 		for (Blog blog : blogs) {
 			mongoDao.persistOrUpdate(blog);
-			log.debug("persisted blog '" + blog.title + "' to db.");
+			log.log("persisted blog '" + blog.title + "' to db.");
 		}
 
 		for (Blog blog : blogs) {
 			Blog blogFromDb = mongoDao.load(blog.title);
-			log.debug("loaded blog: '" + blog.title + "' with id: " + blogFromDb.id);
-			NDC.push("     ");
+			log.log("loaded blog: '" + blog.title + "' with id: " + blogFromDb.id);
+			log.push("     ");
 			for (Post post : blogFromDb.posts) {
-				log.debug("loaded post with content '" + post.content + "'");
+				log.log("loaded post with content '" + post.content + "'");
 			}
-			NDC.pop();
+			log.pop();
 		}
 	}
 }

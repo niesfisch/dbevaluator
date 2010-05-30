@@ -20,5 +20,5 @@ package de.marcelsauer.dbevaluator;
  * DB Evaluator. If not, see <http://www.gnu.org/licenses/>.
  */
 public interface DbEvaluation {
-    void run();
+	void run(LoggingCallback log);
 }

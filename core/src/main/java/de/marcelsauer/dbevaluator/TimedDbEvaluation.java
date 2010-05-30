@@ -40,10 +40,10 @@ public class TimedDbEvaluation implements DbEvaluation {
     }
 
     @Override
-    public void run() {
+    public void run(LoggingCallback log) {
         for (DbEvaluation evaluation : evaluations) {
         	beforeRun(evaluation);
-            run(evaluation);
+            run(evaluation, log);
             afterRun(evaluation);
         }
     }
@@ -69,11 +69,11 @@ public class TimedDbEvaluation implements DbEvaluation {
 		NDC.push("     ");
 	}
 
-	private void run(DbEvaluation evaluation) {
+	private void run(DbEvaluation evaluation, LoggingCallback log) {
 		stopWatch.reset();
 		stopWatch.start();
 		
-		evaluation.run();
+		evaluation.run(log);
 		
 		stopWatch.stop();
 	}
