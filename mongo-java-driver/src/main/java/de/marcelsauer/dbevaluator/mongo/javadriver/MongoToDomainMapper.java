@@ -2,6 +2,7 @@ package de.marcelsauer.dbevaluator.mongo.javadriver;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 import com.mongodb.BasicDBList;
@@ -49,7 +50,7 @@ public class MongoToDomainMapper {
 			Post post = new Post();
 			post.author = postFromDb.getString(Constants.AUTHOR);
 			post.content = postFromDb.getString(Constants.CONTENT);
-			// post.date = postFromDb.getString(Constants.DATE);
+			post.date = (Date)postFromDb.get(Constants.DATE);
 			post.headline = postFromDb.getString(Constants.HEADLINE);
 			mapped.add(post);
 		}
