@@ -68,7 +68,8 @@ public abstract class AbstractDbEvaluatorTest {
 	private void dumpEvaluationResults(TimedDbEvaluation timedEvaluation) {
 		List<SingleResult> singleResults = timedEvaluation.singleResults;
 		System.out.println("total number of blogs processed: " + numberOfBlogsToCreate());
-		System.out.println("total number of posts processed: " + numberOfBlogsToCreate() * numberOfPostsPerBlogToBeCreated());
+		System.out.println("total number of posts processed: " + numberOfBlogsToCreate()
+				* numberOfPostsPerBlogToBeCreated());
 		System.out.println("total time taken (ms): " + timedEvaluation.combinedResult.durationMillis);
 		for (SingleResult singleResult : singleResults) {
 			long durationMillis = singleResult.result.durationMillis;

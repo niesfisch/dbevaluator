@@ -31,7 +31,6 @@ public class MongoDbEvaluatorTest extends AbstractDbEvaluatorTest {
 
 	private final Config conf = new Config(this.getClass().getClassLoader().getResourceAsStream("db.properties"));
 
-	
 	@Override
 	protected int numberOfBlogsToCreate() {
 		return 10;

@@ -19,14 +19,14 @@ import de.marcelsauer.dbevaluator.model.Post;
  * 
  * This file is part of DB Evaluator.
  * 
- * DB Evaluator is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or (at your option) any
- * later version.
+ * DB Evaluator is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  * 
- * DB Evaluator is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * DB Evaluator is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
  * 
  * You should have received a copy of the GNU General Public License along with
@@ -36,10 +36,9 @@ public class MongoToDomainMapper {
 
 	public Blog toBlog(DBObject blogFromDb) {
 		Blog blog = new Blog((String) blogFromDb.get(Constants.TITLE_KEY));
-		blog.id = ((ObjectId)blogFromDb.get("_id")).toString();
+		blog.id = ((ObjectId) blogFromDb.get("_id")).toString();
 		// get posts
-		blog.posts.addAll(toPosts((BasicDBList) blogFromDb
-				.get(Constants.POSTS_KEY)));
+		blog.posts.addAll(toPosts((BasicDBList) blogFromDb.get(Constants.POSTS_KEY)));
 		return blog;
 	}
 
@@ -50,7 +49,7 @@ public class MongoToDomainMapper {
 			Post post = new Post();
 			post.author = postFromDb.getString(Constants.AUTHOR);
 			post.content = postFromDb.getString(Constants.CONTENT);
-			post.date = (Date)postFromDb.get(Constants.DATE);
+			post.date = (Date) postFromDb.get(Constants.DATE);
 			post.headline = postFromDb.getString(Constants.HEADLINE);
 			mapped.add(post);
 		}

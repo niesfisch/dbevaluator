@@ -52,7 +52,7 @@ public class MongoDbBlogDao implements BlogDao {
 	public void persistOrUpdate(Blog blog) {
 		Validate.notNull(blog);
 		Validate.notNull(blog.title);
-		
+
 		Blog existing = load(blog.title);
 
 		DBObject mappedBlog = toMongo.toPersistableBlog(blog);
@@ -67,7 +67,7 @@ public class MongoDbBlogDao implements BlogDao {
 	@Override
 	public Blog delete(String title) {
 		Validate.notNull(title);
-		
+
 		Blog existing = load(title);
 
 		DBObject toRemove = new BasicDBObject(Constants.TITLE_KEY, title);
@@ -83,7 +83,7 @@ public class MongoDbBlogDao implements BlogDao {
 	@Override
 	public void delete(Blog blog) {
 		Validate.notNull(blog);
-		
+
 		delete(blog.title);
 	}
 
