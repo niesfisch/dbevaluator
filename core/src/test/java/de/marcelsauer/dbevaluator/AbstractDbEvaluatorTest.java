@@ -33,15 +33,21 @@ import de.marcelsauer.dbevaluator.model.Post;
  */
 public abstract class AbstractDbEvaluatorTest {
 
-	private static final String SYSTEM_PROPERTY_BLOGS = "blogs";
-	private static final String SYSTEM_PROPERTY_POSTS = "posts";
-	private static final int NUMBER_OF_POSTS = 2;
-	private static final int NUMBER_OF_BLOGS = 1;
 	private static final Log log = LogFactory.getLog(AbstractDbEvaluatorTest.class);
 
+	/**
+	 * creates the concrete {@link DbEvaluation}
+	 * 
+	 * @param blogs
+	 *            to be created
+	 * @return
+	 * @throws Exception
+	 */
 	public abstract DbEvaluation createDbEvaluation(Collection<Blog> blogs) throws Exception;
 
+	// this would be injected via DI management in a real app :)
 	private final CapturingLoggingCallback logCallback = new CapturingLoggingCallback();
+	private final TestConfig testConfig = new TestConfig();
 
 	@Test
 	public void runSingleEvaluation() throws Exception {
@@ -50,38 +56,18 @@ public abstract class AbstractDbEvaluatorTest {
 		dumpResults(timedEvaluation);
 	}
 
-	/**
-	 * @return the number of blogs to be created, subclasses are free to
-	 *         override
-	 */
-	private int numberOfBlogsToCreated() {
-		if (System.getProperty(SYSTEM_PROPERTY_BLOGS) != null) {
-			return Integer.parseInt(System.getProperty(SYSTEM_PROPERTY_BLOGS));
-		}
-		return NUMBER_OF_BLOGS;
-	}
-
-	/**
-	 * @return the amount of posts per blog that should be created
-	 */
-	private int numberOfPostsPerBlogToBeCreated() {
-		if (System.getProperty(SYSTEM_PROPERTY_POSTS) != null) {
-			return Integer.parseInt(System.getProperty(SYSTEM_PROPERTY_POSTS));
-		}
-		return NUMBER_OF_POSTS;
-	}
-
 	private void dumpResults(TimedDbEvaluation timedEvaluation) {
 		dumpCapturedOutput();
 		dumpEvaluationResults(timedEvaluation);
 	}
 
 	private void dumpEvaluationResults(TimedDbEvaluation timedEvaluation) {
+		System.out.println("total number of blogs processed: " + testConfig.numberOfBlogsToCreated());
+		int totalPosts = testConfig.numberOfBlogsToCreated() * testConfig.numberOfPostsPerBlogToBeCreated();
+		System.out.println(String.format("total number of posts processed: %s (%s * %s)", totalPosts, testConfig
+				.numberOfBlogsToCreated(), testConfig.numberOfPostsPerBlogToBeCreated()));
+
 		List<SingleResult> singleResults = timedEvaluation.singleResults;
-		System.out.println("total number of blogs processed: " + numberOfBlogsToCreated());
-		int totalPosts = numberOfBlogsToCreated() * numberOfPostsPerBlogToBeCreated();
-		System.out.println(String.format("total number of posts processed: %s (%s * %s)", totalPosts,
-				numberOfBlogsToCreated(), numberOfPostsPerBlogToBeCreated()));
 		System.out.println("total time taken (ms): " + timedEvaluation.combinedResult.durationMillis);
 		for (SingleResult singleResult : singleResults) {
 			long durationMillis = singleResult.result.durationMillis;
@@ -91,9 +77,11 @@ public abstract class AbstractDbEvaluatorTest {
 	}
 
 	private void dumpCapturedOutput() {
-		System.out.println("captured output during runtime:");
-		for (String toLog : logCallback.getCaptured()) {
-			System.out.println(toLog);
+		if (testConfig.shouldDumpCapturedOutput()) {
+			System.out.println("captured output during runtime:");
+			for (String toLog : logCallback.getCaptured()) {
+				System.out.println(toLog);
+			}
 		}
 	}
 
@@ -114,9 +102,9 @@ public abstract class AbstractDbEvaluatorTest {
 
 	private Collection<Blog> createBlog() {
 		Collection<Blog> blogs = new ArrayList<Blog>();
-		for (int blogNr = 1; blogNr <= numberOfBlogsToCreated(); blogNr++) {
+		for (int blogNr = 1; blogNr <= testConfig.numberOfBlogsToCreated(); blogNr++) {
 			Blog blog = new Blog("the mighty db evaluation " + blogNr);
-			for (int postNr = 1; postNr <= numberOfPostsPerBlogToBeCreated(); postNr++) {
+			for (int postNr = 1; postNr <= testConfig.numberOfPostsPerBlogToBeCreated(); postNr++) {
 				Post post = new Post();
 				post.date = new Date();
 				post.author = "Marcel";
