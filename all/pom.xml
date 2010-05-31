@@ -10,6 +10,7 @@
 	<name>all</name>
 
 	<modules>
+		<module>../core</module>
 		<module>../mongo-java-driver</module>
 		<module>../couchdb4j</module>
 		<module>../jcouchdb</module>

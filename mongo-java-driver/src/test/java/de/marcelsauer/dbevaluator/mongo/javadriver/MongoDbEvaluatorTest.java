@@ -2,9 +2,6 @@ package de.marcelsauer.dbevaluator.mongo.javadriver;
 
 import java.util.Collection;
 
-import com.mongodb.DB;
-import com.mongodb.Mongo;
-
 import de.marcelsauer.dbevaluator.AbstractDbEvaluatorTest;
 import de.marcelsauer.dbevaluator.DbEvaluation;
 import de.marcelsauer.dbevaluator.model.Blog;
@@ -43,10 +40,7 @@ public class MongoDbEvaluatorTest extends AbstractDbEvaluatorTest {
 
 	@Override
 	public DbEvaluation createDbEvaluation(Collection<Blog> blogs) throws Exception {
-		Mongo mongo = new Mongo(conf.getDbServer(), conf.getDbServerPort());
-		DB db = mongo.getDB(conf.getDbName());
-
-		MongoDbBlogDao mongoDao = new MongoDbBlogDao(db);
+		MongoDbBlogDao mongoDao = new Context().getMongoDbBlogDao();
 		DbEvaluation mongoEval = new MongoDbEvaluation(mongoDao, blogs);
 		return mongoEval;
 	}

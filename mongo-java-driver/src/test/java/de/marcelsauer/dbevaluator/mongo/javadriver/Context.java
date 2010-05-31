@@ -1,6 +1,7 @@
-package de.marcelsauer.dbevaluator;
+package de.marcelsauer.dbevaluator.mongo.javadriver;
 
-import org.apache.log4j.NDC;
+import com.mongodb.DB;
+import com.mongodb.Mongo;
 
 /**
  * DB Evaluator Copyright (C) 2010 Marcel Sauer <marcel DOT sauer AT gmx DOT de>
@@ -20,27 +21,23 @@ import org.apache.log4j.NDC;
  * You should have received a copy of the GNU General Public License along with
  * DB Evaluator. If not, see <http://www.gnu.org/licenses/>.
  */
-public interface LoggingCallback {
+public class Context {
 
 	/**
-	 * logs a message during testrun
+	 * this would be handled by a DI framework in the real world ;)
 	 * 
-	 * @param toLog
+	 * @return the fully initialized mongo db blog dao
+	 * @throws Exception
 	 */
-	void log(String toLog);
+	public MongoDbBlogDao getMongoDbBlogDao() throws Exception {
+		Config conf = new Config(this.getClass().getClassLoader().getResourceAsStream("db.properties"));
+		Mongo mongo = new Mongo(conf.getDbServer(), conf.getDbServerPort());
+		DB db = mongo.getDB(conf.getDbName());
 
-	/**
-	 * pushes a string onto the logging stack. this will be prefixed for all
-	 * subsequent calls to {@link LoggingCallback#log(String)}. this is silimar
-	 * to {@link NDC#push(String)}
-	 * 
-	 * @param string
-	 *            to log
-	 */
-	void push(String string);
+		// in a real app they would be interface based ;-)
+		DomainToMongoMapper toMongo = new DomainToMongoMapper();
+		MongoToDomainMapper fromMongo = new MongoToDomainMapper();
 
-	/**
-	 * pops the last string from the stack. this is silimar to {@link NDC#pop()}
-	 */
-	void pop();
+		return new MongoDbBlogDao(db, toMongo, fromMongo);
+	}
 }

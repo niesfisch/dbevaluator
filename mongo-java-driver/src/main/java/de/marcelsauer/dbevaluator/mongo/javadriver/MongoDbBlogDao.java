@@ -32,16 +32,20 @@ import de.marcelsauer.dbevaluator.model.Constants;
 public class MongoDbBlogDao implements BlogDao {
 
 	private final DB db;
-	private DomainToMongoMapper toMongo = new DomainToMongoMapper();
-	private MongoToDomainMapper fromMongo = new MongoToDomainMapper();
 
-	public MongoDbBlogDao(DB db) {
+	// this would be injected in a real world apps ;-)
+	private final DomainToMongoMapper toMongo;
+	private final MongoToDomainMapper fromMongo;
+
+	public MongoDbBlogDao(DB db, DomainToMongoMapper toMongo, MongoToDomainMapper fromMongo) {
 		this.db = db;
+		this.toMongo = toMongo;
+		this.fromMongo = fromMongo;
 	}
 
 	@Override
 	public Blog load(String title) {
-		Validate.notNull(title);
+		Validate.notEmpty(title);
 		DBCollection blogs = getBlogs();
 		DBObject matcher = new BasicDBObject(Constants.TITLE_KEY, title);
 		DBObject blog = blogs.findOne(matcher);
@@ -51,7 +55,7 @@ public class MongoDbBlogDao implements BlogDao {
 	@Override
 	public void persistOrUpdate(Blog blog) {
 		Validate.notNull(blog);
-		Validate.notNull(blog.title);
+		Validate.notEmpty(blog.title);
 
 		Blog existing = load(blog.title);
 
@@ -66,10 +70,8 @@ public class MongoDbBlogDao implements BlogDao {
 
 	@Override
 	public Blog delete(String title) {
-		Validate.notNull(title);
-
+		Validate.notEmpty(title);
 		Blog existing = load(title);
-
 		DBObject toRemove = new BasicDBObject(Constants.TITLE_KEY, title);
 		getBlogs().remove(toRemove);
 
@@ -83,7 +85,6 @@ public class MongoDbBlogDao implements BlogDao {
 	@Override
 	public void delete(Blog blog) {
 		Validate.notNull(blog);
-
 		delete(blog.title);
 	}
 

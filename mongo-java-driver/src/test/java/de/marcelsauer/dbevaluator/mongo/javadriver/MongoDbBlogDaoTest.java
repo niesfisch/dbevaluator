@@ -16,7 +16,6 @@ import com.mongodb.Mongo;
 import de.marcelsauer.dbevaluator.BlogDao;
 import de.marcelsauer.dbevaluator.model.Blog;
 import de.marcelsauer.dbevaluator.model.Post;
-import de.marcelsauer.dbevaluator.mongo.javadriver.MongoDbBlogDao;
 
 /**
  * DB Evaluator Copyright (C) 2010 Marcel Sauer <marcel DOT sauer AT gmx DOT de>
@@ -44,12 +43,9 @@ public class MongoDbBlogDaoTest {
 	private static final String AUTHOR = "the author";
 	private static final String TITLE = "test blog";
 	private final BlogDao dao;
-	private final Config conf = new Config(this.getClass().getClassLoader().getResourceAsStream("db.properties"));
 
 	public MongoDbBlogDaoTest() throws Exception {
-		Mongo mongo = new Mongo(conf.getDbServer(), conf.getDbServerPort());
-		DB db = mongo.getDB(conf.getDbName());
-		dao = new MongoDbBlogDao(db);
+		dao = new Context().getMongoDbBlogDao();
 	}
 
 	@Before
