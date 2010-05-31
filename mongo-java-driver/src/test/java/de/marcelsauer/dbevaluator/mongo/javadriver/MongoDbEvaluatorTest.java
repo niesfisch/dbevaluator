@@ -26,18 +26,6 @@ import de.marcelsauer.dbevaluator.model.Blog;
  */
 public class MongoDbEvaluatorTest extends AbstractDbEvaluatorTest {
 
-	private final Config conf = new Config(this.getClass().getClassLoader().getResourceAsStream("db.properties"));
-
-	@Override
-	protected int numberOfBlogsToCreate() {
-		return 10;
-	}
-
-	@Override
-	protected int numberOfPostsPerBlogToBeCreated() {
-		return 100;
-	}
-
 	@Override
 	public DbEvaluation createDbEvaluation(Collection<Blog> blogs) throws Exception {
 		MongoDbBlogDao mongoDao = new Context().getMongoDbBlogDao();
