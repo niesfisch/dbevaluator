@@ -2,8 +2,6 @@ package de.marcelsauer.dbevaluator.mongo.javadriver;
 
 import java.util.Collection;
 
-import org.apache.log4j.NDC;
-
 import de.marcelsauer.dbevaluator.DbEvaluation;
 import de.marcelsauer.dbevaluator.LoggingCallback;
 import de.marcelsauer.dbevaluator.model.Blog;
