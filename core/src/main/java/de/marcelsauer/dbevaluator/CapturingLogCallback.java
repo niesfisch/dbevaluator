@@ -1,6 +1,10 @@
 package de.marcelsauer.dbevaluator;
 
-import org.apache.log4j.NDC;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.List;
 
 /**
  * DB Evaluator Copyright (C) 2010 Marcel Sauer <marcel DOT sauer AT gmx DOT de>
@@ -20,27 +24,31 @@ import org.apache.log4j.NDC;
  * You should have received a copy of the GNU General Public License along with
  * DB Evaluator. If not, see <http://www.gnu.org/licenses/>.
  */
-public interface LoggingCallback {
+public class CapturingLogCallback implements LogCallback {
+	private final List<String> captured = new ArrayList<String>();
+	private final Deque<String> stack = new ArrayDeque<String>();
 
-	/**
-	 * logs a message during testrun
-	 * 
-	 * @param toLog
-	 */
-	void log(String toLog);
+	@Override
+	public void log(String toLog) {
+		String peek = stack.peek();
+		if (peek != null) {
+			captured.add(peek + toLog);
+		} else {
+			captured.add(toLog);
+		}
+	}
 
-	/**
-	 * pushes a string onto the logging stack. this will be prefixed for all
-	 * subsequent calls to {@link LoggingCallback#log(String)}. this is silimar
-	 * to {@link NDC#push(String)}
-	 * 
-	 * @param string
-	 *            to log
-	 */
-	void push(String string);
+	public List<String> getCaptured() {
+		return Collections.unmodifiableList(captured);
+	}
 
-	/**
-	 * pops the last string from the stack. this is silimar to {@link NDC#pop()}
-	 */
-	void pop();
+	@Override
+	public void pop() {
+		stack.pop();
+	}
+
+	@Override
+	public void push(String string) {
+		stack.push(string);
+	}
 }

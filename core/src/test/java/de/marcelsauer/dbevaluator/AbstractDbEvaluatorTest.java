@@ -3,13 +3,12 @@ package de.marcelsauer.dbevaluator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
-import de.marcelsauer.dbevaluator.TimedDbEvaluation.SingleResult;
+import de.marcelsauer.dbevaluator.TimedDbEvaluation.Result;
 import de.marcelsauer.dbevaluator.model.Blog;
 import de.marcelsauer.dbevaluator.model.Post;
 
@@ -43,37 +42,55 @@ public abstract class AbstractDbEvaluatorTest {
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract DbEvaluation createDbEvaluation(Collection<Blog> blogs) throws Exception;
+	public abstract DbEvaluation createDbEvaluation() throws Exception;
 
 	// this would be injected via DI management in a real app :)
-	private final CapturingLoggingCallback logCallback = new CapturingLoggingCallback();
+	private final CapturingLogCallback logCallback = new CapturingLogCallback();
 	private final TestConfig testConfig = new TestConfig();
 
 	@Test
 	public void runSingleEvaluation() throws Exception {
 		TimedDbEvaluation timedEvaluation = getTimedEvaluationToRun();
-		timedEvaluation.run(logCallback);
+		timedEvaluation.run();
+		resultsFor(timedEvaluation);
+	}
+
+	private void resultsFor(TimedDbEvaluation timedEvaluation) {
+		dumpCapturedOutput();
+		System.out.println("---------------------------------------------------------------------");
+		dumpTotals();
 		dumpResults(timedEvaluation);
+		System.out.println("---------------------------------------------------------------------");
 	}
 
 	private void dumpResults(TimedDbEvaluation timedEvaluation) {
-		dumpCapturedOutput();
-		dumpEvaluationResults(timedEvaluation);
+		Collection<Result> results = timedEvaluation.getResults();
+
+		long totalTimeTakenInMillis = calculateTotalTimeTakenInMillis(results);
+		System.out.println("total time taken (ms): " + totalTimeTakenInMillis);
+		for (Result result : results) {
+			if (result.operationNotSupported()) {
+				System.out.println("operation not supported. " + result.ex.getMessage());
+			} else {
+				System.out.println(String.format("action performed: %s in %s (ms)", result.operationPerformed,
+						result.durationMillis));
+			}
+		}
 	}
 
-	private void dumpEvaluationResults(TimedDbEvaluation timedEvaluation) {
+	private long calculateTotalTimeTakenInMillis(Collection<Result> singleResults) {
+		long total = 0;
+		for (Result result : singleResults) {
+			total += result.durationMillis;
+		}
+		return total;
+	}
+
+	private void dumpTotals() {
 		System.out.println("total number of blogs processed: " + testConfig.numberOfBlogsToCreated());
 		int totalPosts = testConfig.numberOfBlogsToCreated() * testConfig.numberOfPostsPerBlogToBeCreated();
 		System.out.println(String.format("total number of posts processed: %s (%s * %s)", totalPosts, testConfig
 				.numberOfBlogsToCreated(), testConfig.numberOfPostsPerBlogToBeCreated()));
-
-		List<SingleResult> singleResults = timedEvaluation.singleResults;
-		System.out.println("total time taken (ms): " + timedEvaluation.combinedResult.durationMillis);
-		for (SingleResult singleResult : singleResults) {
-			long durationMillis = singleResult.result.durationMillis;
-			String evaluator = singleResult.evaluation.getClass().getSimpleName();
-			System.out.println(evaluator + "  " + durationMillis + " (ms)");
-		}
 	}
 
 	private void dumpCapturedOutput() {
@@ -91,16 +108,16 @@ public abstract class AbstractDbEvaluatorTest {
 	private TimedDbEvaluation getTimedEvaluationToRun() throws Exception {
 		StopWatch stopWatch = new StopWatch();
 
-		Collection<Blog> blog = createBlog();
+		Collection<Blog> blogs = createBlogs();
 
-		DbEvaluation evaluation = createDbEvaluation(blog);
+		DbEvaluation evaluation = createDbEvaluation();
 
 		DbEvaluation[] evaluations = new DbEvaluation[] { evaluation };
-		TimedDbEvaluation timedEvaluation = new TimedDbEvaluation(evaluations, stopWatch);
+		TimedDbEvaluation timedEvaluation = new TimedDbEvaluation(evaluations, stopWatch, logCallback, blogs);
 		return timedEvaluation;
 	}
 
-	private Collection<Blog> createBlog() {
+	private Collection<Blog> createBlogs() {
 		Collection<Blog> blogs = new ArrayList<Blog>();
 		for (int blogNr = 1; blogNr <= testConfig.numberOfBlogsToCreated(); blogNr++) {
 			Blog blog = new Blog("the mighty db evaluation " + blogNr);

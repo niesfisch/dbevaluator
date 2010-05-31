@@ -1,9 +1,10 @@
 package de.marcelsauer.dbevaluator.mongo.javadriver;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import de.marcelsauer.dbevaluator.DbEvaluation;
-import de.marcelsauer.dbevaluator.LoggingCallback;
+import de.marcelsauer.dbevaluator.LogCallback;
 import de.marcelsauer.dbevaluator.model.Blog;
 import de.marcelsauer.dbevaluator.model.Post;
 
@@ -28,28 +29,48 @@ import de.marcelsauer.dbevaluator.model.Post;
 public class MongoDbEvaluation implements DbEvaluation {
 
 	private final MongoDbBlogDao mongoDao;
-	private Collection<Blog> blogs;
+	private LogCallback log;
 
-	public MongoDbEvaluation(MongoDbBlogDao mongoDao, Collection<Blog> blogs) {
+	public MongoDbEvaluation(MongoDbBlogDao mongoDao) {
 		this.mongoDao = mongoDao;
-		this.blogs = blogs;
 	}
 
 	@Override
-	public void run(LoggingCallback log) {
+	public void persist(Collection<Blog> blogs) throws UnsupportedOperationException {
 		for (Blog blog : blogs) {
 			mongoDao.persistOrUpdate(blog);
 			log.log("persisted blog '" + blog.title + "' to db.");
 		}
+	}
 
-		for (Blog blog : blogs) {
-			Blog blogFromDb = mongoDao.load(blog.title);
-			log.log("loaded blog: '" + blog.title + "' with id: " + blogFromDb.id);
+	@Override
+	public Collection<Blog> load(Collection<String> blogTitles) throws UnsupportedOperationException {
+		Collection<Blog> blogs = new ArrayList<Blog>();
+		for (String title : blogTitles) {
+			Blog blog = mongoDao.load(title);
+			blogs.add(blog);
+			log.log("loaded blog: '" + title + "' with id: " + blog.id);
 			log.push("     ");
-			for (Post post : blogFromDb.posts) {
+			for (Post post : blog.posts) {
 				log.log("loaded post with content '" + post.content + "'");
 			}
 			log.pop();
 		}
+		return blogs;
+	}
+
+	@Override
+	public void setLogCallback(LogCallback logCallback) {
+		this.log = logCallback;
+	}
+
+	@Override
+	public void commit() throws UnsupportedOperationException {
+		throw new UnsupportedOperationException("transactions are not supported by Mongo DB");
+	}
+
+	@Override
+	public void startTransaction() throws UnsupportedOperationException {
+		throw new UnsupportedOperationException("transactions are not supported by Mongo DB");
 	}
 }

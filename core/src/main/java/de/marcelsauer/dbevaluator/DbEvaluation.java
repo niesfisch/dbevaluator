@@ -1,5 +1,9 @@
 package de.marcelsauer.dbevaluator;
 
+import java.util.Collection;
+
+import de.marcelsauer.dbevaluator.model.Blog;
+
 /**
  * DB Evaluator Copyright (C) 2010 Marcel Sauer <marcel DOT sauer AT gmx DOT de>
  * 
@@ -19,5 +23,43 @@ package de.marcelsauer.dbevaluator;
  * DB Evaluator. If not, see <http://www.gnu.org/licenses/>.
  */
 public interface DbEvaluation {
-	void run(LoggingCallback log);
+
+	/**
+	 * @param logCallback
+	 *            to be used to capture runtime information
+	 */
+	void setLogCallback(LogCallback logCallback);
+
+	/**
+	 * starts a new transaction in the underlaying datastore
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             if starting of transactions is not supported
+	 */
+	void startTransaction() throws UnsupportedOperationException;
+
+	/**
+	 * commit the currently running transaction in the underlaying datastore
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             if starting of transactions is not supported
+	 */
+	void commit() throws UnsupportedOperationException;
+
+	/**
+	 * @param blog
+	 *            to persist, containing the whole object graph
+	 * @throws UnsupportedOperationException
+	 *             if persisting is not supported
+	 */
+	void persist(Collection<Blog> blogs) throws UnsupportedOperationException;
+
+	/**
+	 * @param blogTitles
+	 *            blogs to load
+	 * @return Collection<Blog> the fully eagerly initialized blogs (full graph)
+	 * @throws UnsupportedOperationException
+	 *             if loading of blogs is not supported
+	 */
+	Collection<Blog> load(Collection<String> blogTitles) throws UnsupportedOperationException;
 }

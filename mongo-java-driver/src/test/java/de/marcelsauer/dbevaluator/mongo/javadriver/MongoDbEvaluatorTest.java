@@ -1,10 +1,7 @@
 package de.marcelsauer.dbevaluator.mongo.javadriver;
 
-import java.util.Collection;
-
 import de.marcelsauer.dbevaluator.AbstractDbEvaluatorTest;
 import de.marcelsauer.dbevaluator.DbEvaluation;
-import de.marcelsauer.dbevaluator.model.Blog;
 
 /**
  * DB Evaluator Copyright (C) 2010 Marcel Sauer <marcel DOT sauer AT gmx DOT de>
@@ -27,9 +24,9 @@ import de.marcelsauer.dbevaluator.model.Blog;
 public class MongoDbEvaluatorTest extends AbstractDbEvaluatorTest {
 
 	@Override
-	public DbEvaluation createDbEvaluation(Collection<Blog> blogs) throws Exception {
+	public DbEvaluation createDbEvaluation() throws Exception {
 		MongoDbBlogDao mongoDao = new Context().getMongoDbBlogDao();
-		DbEvaluation mongoEval = new MongoDbEvaluation(mongoDao, blogs);
+		DbEvaluation mongoEval = new MongoDbEvaluation(mongoDao);
 		return mongoEval;
 	}
 }

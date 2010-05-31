@@ -10,9 +10,6 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mongodb.DB;
-import com.mongodb.Mongo;
-
 import de.marcelsauer.dbevaluator.BlogDao;
 import de.marcelsauer.dbevaluator.model.Blog;
 import de.marcelsauer.dbevaluator.model.Post;
