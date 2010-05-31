@@ -5,4 +5,6 @@ this guide will show you how to run the mongodb mongo java driver samples.
 1. download mongo db
 2. start the mongo db server
 3. cd mongo-java-driver
-4. mvn clean install -DargLine="-Dblogs=30 -Dposts=1000 -DprintCapturedInfo=false" 
+4. 
+
+    mvn clean install -DargLine="-Dblogs=30 -Dposts=1000 -DprintCapturedInfo=false" 
