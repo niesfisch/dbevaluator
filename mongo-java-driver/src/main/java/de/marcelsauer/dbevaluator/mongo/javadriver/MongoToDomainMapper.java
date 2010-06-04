@@ -3,7 +3,11 @@ package de.marcelsauer.dbevaluator.mongo.javadriver;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -38,22 +42,37 @@ public class MongoToDomainMapper {
 		Blog blog = new Blog((String) blogFromDb.get(Constants.TITLE_KEY));
 		blog.id = ((ObjectId) blogFromDb.get("_id")).toString();
 		// get posts
-		blog.posts.addAll(toPosts((BasicDBList) blogFromDb.get(Constants.POSTS_KEY)));
+		blog.posts.addAll(toPosts((BasicDBList) blogFromDb.get(Constants.POSTS_KEY), blog));
 		return blog;
 	}
 
-	private Collection<Post> toPosts(BasicDBList posts) {
+	private Collection<Post> toPosts(BasicDBList posts, Blog blog) {
 		Collection<Post> mapped = new ArrayList<Post>();
 		for (Iterator<Object> iter = posts.iterator(); iter.hasNext();) {
 			BasicDBObject postFromDb = (BasicDBObject) iter.next();
 			Post post = new Post();
+			post.blog = blog;
 			post.author = postFromDb.getString(Constants.AUTHOR);
 			post.content = postFromDb.getString(Constants.CONTENT);
 			post.date = (Date) postFromDb.get(Constants.DATE);
 			post.headline = postFromDb.getString(Constants.HEADLINE);
+			post.tags = toDomainTags((BasicDBList) postFromDb.get(Constants.TAGS));
 			mapped.add(post);
 		}
 
 		return mapped;
+	}
+
+	private Set<String> toDomainTags(BasicDBList tagsFromDb) {
+		Set<String> tags = new HashSet<String>();
+		if (tagsFromDb != null) {
+			for (Iterator<Object> iter = tagsFromDb.iterator(); iter.hasNext();) {
+				String tag = (String) iter.next();
+				if (!StringUtils.isEmpty(tag)) {
+					tags.add(tag);
+				}
+			}
+		}
+		return tags;
 	}
 }

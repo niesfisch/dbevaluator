@@ -3,6 +3,7 @@ package de.marcelsauer.dbevaluator;
 import java.util.Collection;
 
 import de.marcelsauer.dbevaluator.model.Blog;
+import de.marcelsauer.dbevaluator.model.Post;
 
 /**
  * DB Evaluator Copyright (C) 2010 Marcel Sauer <marcel DOT sauer AT gmx DOT de>
@@ -62,4 +63,18 @@ public interface DbEvaluation {
 	 *             if loading of blogs is not supported
 	 */
 	Collection<Blog> load(Collection<String> blogTitles) throws UnsupportedOperationException;
+
+	/**
+	 * @param tags
+	 *            to find the posts for
+	 * @return collection of Posts found
+	 * @throws UnsupportedOperationException
+	 */
+	Collection<Post> findPostsWithTags(String... tags) throws UnsupportedOperationException;
+
+	/**
+	 * clears everything to start from scratch. e.g. deleting contents from the
+	 * datastore etc.
+	 */
+	void clearAll() throws UnsupportedOperationException;
 }

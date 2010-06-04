@@ -1,3 +1,4 @@
+
 this project was born out of the idea to get some useful java samples for the commong "NoSql" databases
 available on the market. it doesn't want to show you the perfect java code. just some typical samples
 that should get you up and running quickly.

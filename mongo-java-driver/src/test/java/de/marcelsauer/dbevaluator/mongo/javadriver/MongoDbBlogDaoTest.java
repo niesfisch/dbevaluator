@@ -34,6 +34,9 @@ import de.marcelsauer.dbevaluator.model.Post;
  */
 public class MongoDbBlogDaoTest {
 
+	private static final String THE_NEWLY_ADDED_TAG = "the newly added tag";
+	private static final String THE_SAMPLE_TAG_2 = "the sample tag 2";
+	private static final String THE_SAMPLE_TAG_1 = "the sample tag 1";
 	private static final String UPDATED_AUTHOR = "the updated author";
 	private static final String HEADLINE = "the headline";
 	private static final String CONTENT = "the content";
@@ -57,8 +60,7 @@ public class MongoDbBlogDaoTest {
 
 	@Test
 	public void thatDeleteWorks() {
-		Blog blog = getBlog();
-		dao.persistOrUpdate(blog);
+		createAndPersistBlog();
 
 		assertNotNull(dao.load(TITLE));
 
@@ -68,24 +70,38 @@ public class MongoDbBlogDaoTest {
 
 	@Test
 	public void thatLoadWorks() {
+		createAndPersistBlog();
+		loadAndAssertBlog();
+	}
+
+	private void createAndPersistBlog() {
 		Blog blog = getBlog();
 		dao.persistOrUpdate(blog);
-
-		Blog blogFromDb = dao.load(TITLE);
-		assertEquals(TITLE, blogFromDb.title);
-
-		Post post = blogFromDb.posts.get(0);
-		assertTrue(blogFromDb.posts.size() == 1);
-		assertEquals(AUTHOR, post.author);
-		assertEquals(CONTENT, post.content);
-		assertEquals(HEADLINE, post.headline);
 	}
 
 	@Test
 	public void thatPersistOrUpdateWorks() {
-		Blog blog = getBlog();
-		dao.persistOrUpdate(blog);
+		createAndPersistBlog();
 
+		Blog blogFromDb = loadAndAssertBlog();
+
+		// now we update
+		updateAndPersist(blogFromDb);
+
+		blogFromDb = dao.load(TITLE);
+		assertEquals(TITLE, blogFromDb.title);
+		assertEquals(3, blogFromDb.posts.size());
+
+		Post post = blogFromDb.posts.get(0);
+		assertEquals(UPDATED_AUTHOR, post.author);
+		assertEquals(CONTENT, post.content);
+		assertEquals(HEADLINE, post.headline);
+		assertTrue(post.tags.contains(THE_NEWLY_ADDED_TAG));
+		assertTrue(post.tags.contains(THE_SAMPLE_TAG_1));
+		assertTrue(post.tags.contains(THE_SAMPLE_TAG_1));
+	}
+
+	private Blog loadAndAssertBlog() {
 		Blog blogFromDb = dao.load(TITLE);
 		assertEquals(TITLE, blogFromDb.title);
 
@@ -95,17 +111,25 @@ public class MongoDbBlogDaoTest {
 		assertEquals(CONTENT, post.content);
 		assertEquals(HEADLINE, post.headline);
 
-		// now we update
-		blog.posts.get(0).author = UPDATED_AUTHOR;
-		dao.persistOrUpdate(blog);
+		assertTrue(post.tags.contains(THE_SAMPLE_TAG_1));
+		assertTrue(post.tags.contains(THE_SAMPLE_TAG_2));
 
-		blogFromDb = dao.load(TITLE);
-		assertEquals(TITLE, blogFromDb.title);
-		assertTrue(blogFromDb.posts.size() == 1);
-		post = blogFromDb.posts.get(0);
-		assertEquals(UPDATED_AUTHOR, post.author);
-		assertEquals(CONTENT, post.content);
-		assertEquals(HEADLINE, post.headline);
+		return blogFromDb;
+	}
+
+	private void updateAndPersist(Blog blog) {
+		blog.posts.get(0).author = UPDATED_AUTHOR;
+		blog.posts.get(0).tags.add(THE_NEWLY_ADDED_TAG);
+		
+		Post post1 = new Post();
+		post1.author="marcel";
+		Post post2 = new Post();
+		post2.author="marcel";
+		
+		blog.posts.add(post1);
+		blog.posts.add(post2);
+		
+		dao.persistOrUpdate(blog);
 	}
 
 	private Blog getBlog() {
@@ -116,8 +140,11 @@ public class MongoDbBlogDaoTest {
 		post.content = CONTENT;
 		post.headline = HEADLINE;
 		post.date = new Date();
+		post.addTag(THE_SAMPLE_TAG_1);
+		post.addTag(THE_SAMPLE_TAG_2);
 
 		blog.posts.add(post);
+
 		return blog;
 	}
 }

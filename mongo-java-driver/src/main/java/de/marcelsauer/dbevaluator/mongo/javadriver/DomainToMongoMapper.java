@@ -37,6 +37,7 @@ public class DomainToMongoMapper {
 		mapped.put(Constants.CONTENT, post.content);
 		mapped.put(Constants.DATE, post.date);
 		mapped.put(Constants.HEADLINE, post.headline);
+		mapped.put(Constants.TAGS, toPersistableTags(post.tags));
 		return mapped;
 	}
 
@@ -44,6 +45,14 @@ public class DomainToMongoMapper {
 		List<DBObject> mapped = new ArrayList<DBObject>();
 		for (Post post : posts) {
 			mapped.add(toPersistablePost(post));
+		}
+		return mapped;
+	}
+
+	public List<String> toPersistableTags(Collection<String> tags) {
+		List<String> mapped = new ArrayList<String>();
+		for (String tag : tags) {
+			mapped.add(tag);
 		}
 		return mapped;
 	}

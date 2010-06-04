@@ -1,15 +1,19 @@
 package de.marcelsauer.dbevaluator.mongo.javadriver;
 
+import java.util.Collection;
+
 import org.apache.commons.lang.Validate;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import de.marcelsauer.dbevaluator.BlogDao;
 import de.marcelsauer.dbevaluator.model.Blog;
 import de.marcelsauer.dbevaluator.model.Constants;
+import de.marcelsauer.dbevaluator.model.Post;
 
 /**
  * DB Evaluator Copyright (C) 2010 Marcel Sauer <marcel DOT sauer AT gmx DOT de>
@@ -86,6 +90,23 @@ public class MongoDbBlogDao implements BlogDao {
 	public void delete(Blog blog) {
 		Validate.notNull(blog);
 		delete(blog.title);
+	}
+
+	@Override
+	public Collection<Post> findPostsWithTags(String... tags) {
+		DBCollection blogs = getBlogs();
+		DBObject matcher = new BasicDBObject(Constants.TAGS, tags);
+		DBCursor cur = blogs.find(matcher);
+		while (cur.hasNext()) {
+			DBObject next = cur.next();
+		}
+		return null;
+		// return (blog != null) ? fromMongo.toBlog(blog) : null;
+	}
+
+	public void clearCollection(String string) {
+		DBObject cmd = new BasicDBObject("drop", "blogs");
+		db.command(cmd);
 	}
 
 }

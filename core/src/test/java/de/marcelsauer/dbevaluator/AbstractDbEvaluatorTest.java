@@ -127,10 +127,17 @@ public abstract class AbstractDbEvaluatorTest {
 				post.author = "Marcel";
 				post.headline = "the " + postNr + ". post of blog " + blogNr;
 				post.content = "the " + postNr + ". content of blog " + blogNr;
+				addTagsTo(post);
 				blog.add(post);
 			}
 			blogs.add(blog);
 		}
 		return blogs;
+	}
+
+	private void addTagsTo(Post post) {
+		post.addTag("first tag");
+		post.addTag("second tag");
+		post.addTag("third tag");
 	}
 }

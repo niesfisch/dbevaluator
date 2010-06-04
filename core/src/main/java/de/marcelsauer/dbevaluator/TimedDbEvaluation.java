@@ -75,37 +75,27 @@ public class TimedDbEvaluation {
 
 		evaluation.setLogCallback(logCallback);
 
-		persist(evaluation, results);
-		load(evaluation, results);
+		execute(new ClearCommand(evaluation), results);
+		execute(new PersistCommand(evaluation, blogs), results);
+		execute(new LoadByBlogTitleCommand(evaluation, extractTitles()), results);
+		execute(new LoadByTagsCommand(evaluation, "the first tag"), results);
 
 		return results;
 	}
 
-	private void load(DbEvaluation evaluation, Collection<Result> results) {
-		stopWatch.reset();
-		stopWatch.start();
-		Result result = new Result();
-		result.evaluation = evaluation;
-		result.operationPerformed = "load";
-		try {
-			evaluation.load(extractTitles());
-		} catch (UnsupportedOperationException e) {
-			result.ex = e;
-		} finally {
-			stopWatch.stop();
-			result.durationMillis = stopWatch.durationTimeMillis();
-			results.add(result);
-		}
+	private interface Command {
+		void execute();
+
+		String name();
 	}
 
-	private void persist(DbEvaluation evaluation, Collection<Result> results) {
+	private void execute(Command command, Collection<Result> results) {
 		stopWatch.reset();
 		stopWatch.start();
 		Result result = new Result();
-		result.evaluation = evaluation;
-		result.operationPerformed = "persist";
+		result.operationPerformed = command.name();
 		try {
-			evaluation.persist(blogs);
+			command.execute();
 		} catch (UnsupportedOperationException e) {
 			result.ex = e;
 		} finally {
@@ -134,4 +124,86 @@ public class TimedDbEvaluation {
 		}
 	}
 
+	// ************* all supported commands
+	private class ClearCommand implements Command {
+		private DbEvaluation eval;
+
+		private ClearCommand(DbEvaluation evaluation) {
+			this.eval = evaluation;
+		}
+
+		@Override
+		public void execute() {
+			eval.clearAll();
+		}
+
+		@Override
+		public String name() {
+			return "clearing all blogs";
+		}
+
+	}
+
+	private class LoadByBlogTitleCommand implements Command {
+		private DbEvaluation eval;
+		private Collection<String> titles;
+
+		private LoadByBlogTitleCommand(DbEvaluation evaluation, Collection<String> titles) {
+			this.eval = evaluation;
+			this.titles = titles;
+		}
+
+		@Override
+		public void execute() {
+			eval.load(titles);
+		}
+
+		@Override
+		public String name() {
+			return "loading by blog title";
+		}
+
+	}
+
+	private class LoadByTagsCommand implements Command {
+		private DbEvaluation eval;
+		private String[] tags;
+
+		private LoadByTagsCommand(DbEvaluation evaluation, String... tags) {
+			this.eval = evaluation;
+			this.tags = tags;
+		}
+
+		@Override
+		public void execute() {
+			eval.findPostsWithTags(tags);
+		}
+
+		@Override
+		public String name() {
+			return "loading by tags";
+		}
+
+	}
+
+	private class PersistCommand implements Command {
+		private DbEvaluation eval;
+		private Collection<Blog> blogs;
+
+		private PersistCommand(DbEvaluation evaluation, Collection<Blog> blogs) {
+			this.eval = evaluation;
+			this.blogs = blogs;
+		}
+
+		@Override
+		public void execute() {
+			eval.persist(blogs);
+		}
+
+		@Override
+		public String name() {
+			return "persisting";
+		}
+
+	}
 }

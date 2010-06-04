@@ -27,6 +27,7 @@ public class Constants {
 	public static final String DATE = "date";
 	public static final String CONTENT = "content";
 	public static final String AUTHOR = "author";
+	public static final String TAGS = "tags";
 
 	
 }
