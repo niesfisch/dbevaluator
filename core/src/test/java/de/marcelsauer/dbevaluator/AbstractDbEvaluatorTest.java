@@ -70,7 +70,7 @@ public abstract class AbstractDbEvaluatorTest {
 		System.out.println("total time taken (ms): " + totalTimeTakenInMillis);
 		for (Result result : results) {
 			if (result.operationNotSupported()) {
-				System.out.println("operation not supported. " + result.ex.getMessage());
+				System.out.println("operation '" + result.operationPerformed + "' not supported. reason: " + result.ex.getMessage());
 			} else {
 				System.out.println(String.format("action performed: %s in %s (ms)", result.operationPerformed,
 						result.durationMillis));

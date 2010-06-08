@@ -12,6 +12,7 @@ import de.marcelsauer.dbevaluator.commands.Command;
 import de.marcelsauer.dbevaluator.commands.LoadByBlogTitle;
 import de.marcelsauer.dbevaluator.commands.LoadByTags;
 import de.marcelsauer.dbevaluator.commands.Persist;
+import de.marcelsauer.dbevaluator.commands.TxDecorator;
 import de.marcelsauer.dbevaluator.model.Blog;
 
 /**
@@ -62,17 +63,15 @@ public class TimedDbEvaluation {
 		}
 	}
 
-	private void afterRun(DbEvaluation evaluation) {
-		NDC.pop();
-
-		long durationTimeMillis = stopWatch.durationTimeMillis();
-		log.debug("finished  " + evaluation.getClass().getSimpleName() + " in " + durationTimeMillis + " (ms)");
-	}
-
 	private void beforeRun(DbEvaluation evaluation) {
 		String evaluationName = evaluation.getClass().getSimpleName();
 		log.debug("running " + evaluationName + " evaluation");
 		NDC.push("     ");
+	}
+
+	private void afterRun(DbEvaluation evaluation) {
+		NDC.pop();
+		log.debug("finished  " + evaluation.getClass().getSimpleName());
 	}
 
 	private Collection<Result> run(DbEvaluation evaluation) {
@@ -94,11 +93,11 @@ public class TimedDbEvaluation {
 	}
 
 	private void runTransactional(DbEvaluation evaluation, Collection<Result> results) {
-		DbEvaluation wrapper = new DbEvaluationTransactionWrapper(evaluation);
-		execute(new Clear(wrapper), results);
-		execute(new Persist(wrapper, blogs), results);
-		execute(new LoadByBlogTitle(wrapper, extractTitles()), results);
-		execute(new LoadByTags(wrapper, "the first tag"), results);
+		DbEvaluation wrapper = new DbEvaluationTxWrapper(evaluation);
+		execute(new TxDecorator(new Clear(wrapper)), results);
+		execute(new TxDecorator(new Persist(wrapper, blogs)), results);
+		execute(new TxDecorator(new LoadByBlogTitle(wrapper, extractTitles())), results);
+		execute(new TxDecorator(new LoadByTags(wrapper, "the first tag")), results);
 	}
 
 	private void execute(Command command, Collection<Result> results) {

@@ -23,11 +23,11 @@ import de.marcelsauer.dbevaluator.model.Post;
  * You should have received a copy of the GNU General Public License along with
  * DB Evaluator. If not, see <http://www.gnu.org/licenses/>.
  */
-class DbEvaluationTransactionWrapper implements DbEvaluation {
+class DbEvaluationTxWrapper implements DbEvaluation {
 
 	private DbEvaluation delegate;
 
-	public DbEvaluationTransactionWrapper(DbEvaluation delegate) {
+	public DbEvaluationTxWrapper(DbEvaluation delegate) {
 		this.delegate = delegate;
 	}
 
