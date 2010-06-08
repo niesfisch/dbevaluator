@@ -31,3 +31,24 @@ read the README.md to get started
 * jcouchdb
 * jredis
 * neo4j
+
+## sample output
+
+this is what a typical run of db evaluation looks like
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running de.marcelsauer.dbevaluator.mongo.javadriver.MongoDbEvaluatorTest
+2010-06-08 20:05:48,942 [DEBUG] TimedDbEvaluation:  running MongoDbEvaluation evaluation
+2010-06-08 20:05:49,097 [DEBUG] TimedDbEvaluation:  finished  MongoDbEvaluation in 3 (ms)
+---------------------------------------------------------------------
+total number of blogs processed: 1
+total number of posts processed: 10 (1 * 10)
+total time taken (ms): 149
+action performed: clearing all blogs in 131 (ms)
+action performed: persisting in 6 (ms)
+action performed: loading by blog title in 9 (ms)
+action performed: loading by tags in 3 (ms)
+---------------------------------------------------------------------
+
