@@ -73,8 +73,14 @@ public interface DbEvaluation {
 	Collection<Post> findPostsWithTags(String... tags) throws UnsupportedOperationException;
 
 	/**
-	 * called once per db evaluation. this is the place to clean the datastore
-	 * or do other pre test stuff.
+	 * called once per db evaluation before all the tests are run. this is the
+	 * place to clean the datastore or do other pre test stuff.
 	 */
 	void beforeTestrun();
+
+	/**
+	 * called once per db evaluation after all tests have been run. this is the
+	 * place to clean the datastore or do other pre test stuff.
+	 */
+	void afterTestrun();
 }

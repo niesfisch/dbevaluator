@@ -2,9 +2,7 @@ package de.marcelsauer.dbevaluator.mongo.javadriver;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
-import de.marcelsauer.dbevaluator.BlogDao;
 import de.marcelsauer.dbevaluator.DbEvaluation;
 import de.marcelsauer.dbevaluator.LogCallback;
 import de.marcelsauer.dbevaluator.model.Blog;
@@ -77,12 +75,17 @@ public class MongoDbEvaluation implements DbEvaluation {
 	}
 
 	@Override
-	public Collection<Post> findPostsWithTags(String ... tags) throws UnsupportedOperationException {
+	public Collection<Post> findPostsWithTags(String... tags) throws UnsupportedOperationException {
 		return mongoDao.findPostsWithTags(tags);
 	}
 
 	@Override
 	public void beforeTestrun() throws UnsupportedOperationException {
 		mongoDao.clearCollection("blogs");
+	}
+
+	@Override
+	public void afterTestrun() {
+		// nothing to do at the moment
 	}
 }

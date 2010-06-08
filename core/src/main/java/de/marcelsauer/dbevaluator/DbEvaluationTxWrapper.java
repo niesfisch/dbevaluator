@@ -32,7 +32,7 @@ class DbEvaluationTxWrapper implements DbEvaluation {
 	}
 
 	@Override
-	public void beforeTestrun() throws UnsupportedOperationException {
+	public void beforeTestrun() {
 		delegate.startTransaction();
 		try {
 			this.delegate.beforeTestrun();
@@ -85,5 +85,10 @@ class DbEvaluationTxWrapper implements DbEvaluation {
 	@Override
 	public void startTransaction() throws UnsupportedOperationException {
 		this.delegate.startTransaction();
+	}
+
+	@Override
+	public void afterTestrun() {
+		this.delegate.afterTestrun();
 	}
 }
