@@ -1,7 +1,6 @@
 package de.marcelsauer.dbevaluator;
 
 import java.util.Collection;
-import java.util.Set;
 
 import de.marcelsauer.dbevaluator.model.Blog;
 import de.marcelsauer.dbevaluator.model.Post;
@@ -53,10 +52,11 @@ public interface BlogDao {
 	 *            to be deleted
 	 */
 	void delete(Blog blog);
-	
+
 	/**
-	 * @param tags to find posts for
+	 * @param tags
+	 *            to find posts for
 	 * @return the found posts
 	 */
-	Collection<Post> findPostsWithTags(String ... tags);
+	Collection<Post> findPostsWithTags(String... tags);
 }

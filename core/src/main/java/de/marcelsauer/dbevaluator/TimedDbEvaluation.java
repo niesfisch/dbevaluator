@@ -7,6 +7,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.NDC;
 
+import de.marcelsauer.dbevaluator.commands.Clear;
+import de.marcelsauer.dbevaluator.commands.Command;
+import de.marcelsauer.dbevaluator.commands.LoadByBlogTitle;
+import de.marcelsauer.dbevaluator.commands.LoadByTags;
+import de.marcelsauer.dbevaluator.commands.Persist;
 import de.marcelsauer.dbevaluator.model.Blog;
 
 /**
@@ -75,18 +80,25 @@ public class TimedDbEvaluation {
 
 		evaluation.setLogCallback(logCallback);
 
-		execute(new ClearCommand(evaluation), results);
-		execute(new PersistCommand(evaluation, blogs), results);
-		execute(new LoadByBlogTitleCommand(evaluation, extractTitles()), results);
-		execute(new LoadByTagsCommand(evaluation, "the first tag"), results);
+		runNonTransactional(evaluation, results);
+		runTransactional(evaluation, results);
 
 		return results;
 	}
 
-	private interface Command {
-		void execute();
+	private void runNonTransactional(DbEvaluation evaluation, Collection<Result> results) {
+		execute(new Clear(evaluation), results);
+		execute(new Persist(evaluation, blogs), results);
+		execute(new LoadByBlogTitle(evaluation, extractTitles()), results);
+		execute(new LoadByTags(evaluation, "the first tag"), results);
+	}
 
-		String name();
+	private void runTransactional(DbEvaluation evaluation, Collection<Result> results) {
+		DbEvaluation wrapper = new DbEvaluationTransactionWrapper(evaluation);
+		execute(new Clear(wrapper), results);
+		execute(new Persist(wrapper, blogs), results);
+		execute(new LoadByBlogTitle(wrapper, extractTitles()), results);
+		execute(new LoadByTags(wrapper, "the first tag"), results);
 	}
 
 	private void execute(Command command, Collection<Result> results) {
@@ -125,85 +137,4 @@ public class TimedDbEvaluation {
 	}
 
 	// ************* all supported commands
-	private class ClearCommand implements Command {
-		private DbEvaluation eval;
-
-		private ClearCommand(DbEvaluation evaluation) {
-			this.eval = evaluation;
-		}
-
-		@Override
-		public void execute() {
-			eval.clearAll();
-		}
-
-		@Override
-		public String name() {
-			return "clearing all blogs";
-		}
-
-	}
-
-	private class LoadByBlogTitleCommand implements Command {
-		private DbEvaluation eval;
-		private Collection<String> titles;
-
-		private LoadByBlogTitleCommand(DbEvaluation evaluation, Collection<String> titles) {
-			this.eval = evaluation;
-			this.titles = titles;
-		}
-
-		@Override
-		public void execute() {
-			eval.load(titles);
-		}
-
-		@Override
-		public String name() {
-			return "loading by blog title";
-		}
-
-	}
-
-	private class LoadByTagsCommand implements Command {
-		private DbEvaluation eval;
-		private String[] tags;
-
-		private LoadByTagsCommand(DbEvaluation evaluation, String... tags) {
-			this.eval = evaluation;
-			this.tags = tags;
-		}
-
-		@Override
-		public void execute() {
-			eval.findPostsWithTags(tags);
-		}
-
-		@Override
-		public String name() {
-			return "loading by tags";
-		}
-
-	}
-
-	private class PersistCommand implements Command {
-		private DbEvaluation eval;
-		private Collection<Blog> blogs;
-
-		private PersistCommand(DbEvaluation evaluation, Collection<Blog> blogs) {
-			this.eval = evaluation;
-			this.blogs = blogs;
-		}
-
-		@Override
-		public void execute() {
-			eval.persist(blogs);
-		}
-
-		@Override
-		public String name() {
-			return "persisting";
-		}
-
-	}
 }

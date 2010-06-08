@@ -1,7 +1,6 @@
 package de.marcelsauer.dbevaluator.mongo.javadriver;
 
 import de.marcelsauer.dbevaluator.AbstractDbEvaluatorTest;
-import de.marcelsauer.dbevaluator.BlogDao;
 import de.marcelsauer.dbevaluator.DbEvaluation;
 
 /**

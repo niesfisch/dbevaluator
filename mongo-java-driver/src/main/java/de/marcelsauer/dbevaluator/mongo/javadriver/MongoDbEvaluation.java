@@ -82,7 +82,7 @@ public class MongoDbEvaluation implements DbEvaluation {
 	}
 
 	@Override
-	public void clearAll() throws UnsupportedOperationException {
+	public void beforeTestrun() throws UnsupportedOperationException {
 		mongoDao.clearCollection("blogs");
 	}
 }

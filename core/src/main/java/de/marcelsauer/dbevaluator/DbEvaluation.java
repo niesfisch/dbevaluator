@@ -67,14 +67,14 @@ public interface DbEvaluation {
 	/**
 	 * @param tags
 	 *            to find the posts for
-	 * @return collection of Posts found
+	 * @return fully loaded (eagerly) posts found
 	 * @throws UnsupportedOperationException
 	 */
 	Collection<Post> findPostsWithTags(String... tags) throws UnsupportedOperationException;
 
 	/**
-	 * clears everything to start from scratch. e.g. deleting contents from the
-	 * datastore etc.
+	 * called once per db evaluation. this is the place to clean the datastore
+	 * or do other pre test stuff.
 	 */
-	void clearAll() throws UnsupportedOperationException;
+	void beforeTestrun();
 }
