@@ -36,7 +36,7 @@ read the README.md to get started
 
 ## sample output
 
-this is what a typical run of db evaluation looks like
+this is what a typical run of a db evaluation looks like
 
     -------------------------------------------------------  
      T E S T S  
