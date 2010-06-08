@@ -15,7 +15,9 @@ you'll need git to checkout the project -> <http://git-scm.com/>
 
     $ git clone http://github.com/niesfisch/dbevaluator.git dbevaluator
     $ cd dbevaluator 
-    $ mvn clean install -f core/pom.xml -> builds the core which is needed by all drivers
+    $ mvn clean install -f core/pom.xml
+
+the last step builds the core which is needed by all drivers
 
 choose which driver you want to test by changing into the driver subfolder 
 
