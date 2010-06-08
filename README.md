@@ -10,6 +10,7 @@ need the datastore running unless it's an embedded one (like  neo4j) which will 
 ## get up and running
  
 you'll need Maven2 to build the application -> <http://maven.apache.org/download.html>
+
 you'll need git to checkout the project -> <http://git-scm.com/>
 
     $ git clone http://github.com/niesfisch/dbevaluator.git dbevaluator
@@ -17,6 +18,7 @@ you'll need git to checkout the project -> <http://git-scm.com/>
     $ mvn clean install -f core/pom.xml -> builds the core which is needed by all drivers
 
 choose which driver you want to test by changing into the driver subfolder 
+
 read the README.md to get started
 
 ## drivers already implemented:
