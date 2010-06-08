@@ -14,9 +14,7 @@ now all you need to do is follow the guides provided in the README.txt of the dr
  
     1. you'll need Maven2 to build the application
     2. git clone http://github.com/niesfisch/dbevaluator.git dbevaluator 
-    3. now you have to choose which database/driver combination you want to test
-
-there are different README.txt files for each driver in the subfolder.
+    3. choose which driver you want to test by changing into the driver subfolder (there read the README.md first)
 
 ## drivers already implemented:
 
