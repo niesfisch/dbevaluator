@@ -11,13 +11,13 @@ make sure you've followed the step under *get up and running* (<http://github.co
 ### Configuration
 
 #### change the connection settings
-mongo-java-driver/src/test/resources/db.properties (the run step 4.) again)
+    mongo-java-driver/src/test/resources/db.properties (the run step 4.) again)
 
 #### change how many blogs/posts will be created
 
--Dblogs=x -> number of blogs to created
--Dposts=x -> number of posts per blog to be created
--DprintCapturedInfo=true|false -> print information that was captured while the test was running
+    -Dblogs=x -> number of blogs to created
+    -Dposts=x -> number of posts per blog to be created
+    -DprintCapturedInfo=true|false -> print information that was captured while the test was running
 
 ### more info
 
