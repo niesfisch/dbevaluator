@@ -1,5 +1,7 @@
 # Mongo Java Driver for MongoDB
 
+make sure you've followed the step under *get up and running* (<http://github.com/niesfisch/dbevaluator>)
+
 1. download mongo db -> <http://www.mongodb.org/display/DOCS/Downloads>
 2. start the mongo db server -> <http://www.mongodb.org/display/DOCS/Quickstart>
 3. cd mongo-java-driver
