@@ -6,11 +6,9 @@
 		<groupId>de.marcelsauer.dbevaluator</groupId>
 		<artifactId>all</artifactId>
 		<version>0.1-SNAPSHOT</version>
+		<relativePath>../all/</relativePath>
 	</parent>
-	<groupId>de.marcelsauer.dbevaluator</groupId>
 	<artifactId>jcouchdb</artifactId>
-	<packaging>jar</packaging>
-
 	<name>jcouchdb</name>
 
 	<dependencies>

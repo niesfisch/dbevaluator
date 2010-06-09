@@ -6,11 +6,10 @@
 		<groupId>de.marcelsauer.dbevaluator</groupId>
 		<artifactId>all</artifactId>
 		<version>0.1-SNAPSHOT</version>
+		<relativePath>../all/</relativePath>
 	</parent>
-	<groupId>de.marcelsauer.dbevaluator</groupId>
 	<artifactId>neo4j</artifactId>
-	<packaging>jar</packaging>
-	<name>neo4j</name>
+	<name>neo4j driver</name>
 	
 	<dependencies>
 		<dependency>

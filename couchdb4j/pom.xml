@@ -6,12 +6,9 @@
 		<groupId>de.marcelsauer.dbevaluator</groupId>
 		<artifactId>all</artifactId>
 		<version>0.1-SNAPSHOT</version>
+		<relativePath>../all/</relativePath>
 	</parent>
-	<groupId>de.marcelsauer.dbevaluator</groupId>
 	<artifactId>couchdb4j</artifactId>
-	<packaging>jar</packaging>
-
-
 	<name>couchdb4j</name>
 	<dependencies>
 		<dependency>

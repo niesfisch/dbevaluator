@@ -80,7 +80,7 @@ public interface DbEvaluation {
 
 	/**
 	 * called once per db evaluation after all tests have been run. this is the
-	 * place to clean the datastore or do other pre test stuff.
+	 * place to clean the datastore or do other test stuff that should be done.
 	 */
 	void afterTestrun();
 }

@@ -3,16 +3,13 @@
                       http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>de.marcelsauer.dbevaluator</groupId>
 		<artifactId>all</artifactId>
+		<groupId>de.marcelsauer.dbevaluator</groupId>
 		<version>0.1-SNAPSHOT</version>
 		<relativePath>../all/</relativePath>
 	</parent>
-	<groupId>de.marcelsauer.dbevaluator</groupId>
 	<artifactId>mongo-java-driver</artifactId>
-	<packaging>jar</packaging>
-
-	<name>Mongo</name>
+	<name>Mongo Java Driver for MongoDB</name>
 
 	<dependencies>
 

@@ -6,12 +6,10 @@
 		<groupId>de.marcelsauer.dbevaluator</groupId>
 		<artifactId>all</artifactId>
 		<version>0.1-SNAPSHOT</version>
+		<relativePath>../all/</relativePath>
 	</parent>
-	<groupId>de.marcelsauer.dbevaluator</groupId>
 	<artifactId>jredis</artifactId>
-	<packaging>jar</packaging>
-
-	<name>jredis</name>
+	<name>jredis driver for redis db</name>
 
 	<dependencies>
 		<dependency>

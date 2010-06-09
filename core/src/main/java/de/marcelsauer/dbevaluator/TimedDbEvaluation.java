@@ -85,6 +85,7 @@ public class TimedDbEvaluation {
 		return results;
 	}
 
+	// TODO move clear to "before" and create an "after" step
 	private void runNonTransactional(DbEvaluation evaluation, Collection<Result> results) {
 		execute(new Clear(evaluation), results);
 		execute(new Persist(evaluation, blogs), results);
