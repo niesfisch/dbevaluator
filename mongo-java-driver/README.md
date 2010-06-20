@@ -28,3 +28,11 @@ start the mongo db server -> <http://www.mongodb.org/display/DOCS/Quickstart>
 ### more info
 
 http://www.mongodb.org/display/DOCS/Java+Language+Center
+
+### Troubleshooting
+
+#### Out of Memory Errors
+
+this can happen if you try to create _a lot_ of posts/blogs. try to increase the "Xmx" parameter, e.g.:
+
+    $ mvn clean install -DargLine="-Dblogs=100 -Dposts=10000 -DprintCapturedInfo=false -Xmx2048m"
