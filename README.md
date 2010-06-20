@@ -1,13 +1,14 @@
 # Db Evaluator
 
 this project was born out of the idea to get some useful java samples for the common "NoSql" databases
-available on the market. it doesn't want to show you the perfect java code. just some typical samples
-that should get you up and running quickly.
+available on the market. it is all based around some trivial tasks that the database/driver combination under test has to execute sequentially.
+it is by no means intended to show you the best java code :) - just some simple code to get someone started with a database/driver combination.
 
-![xxxxxxxxxxxx](http://marcel-sauer.de/dbevaluator/uml.png)
+## this what the uml of the "simple blog" looks like
 
-it shows how to connect with different drivers to different data stores. for all of the examples you'll
-need the datastore running unless it's an embedded one (like  neo4j) which will be started during app runtime.
+![blog and posts uml](http://marcel-sauer.de/dbevaluator/uml.png)
+
+for all of the examples you'll need the datastore running unless it's an embedded one (like neo4j) which will be started during application runtime.
 
 ## get up and running
  
@@ -36,7 +37,24 @@ read the README.md to get started
 * jredis
 * neo4j
 
-## sample output
+## what does it do?
+
+running a specific db evaluation like "mongo-java-driver" executes the following steps in sequence and it's up to the implementation to decide what to do.
+Check the "Sample Output" section to see some results.
+
+### Non-Transactional
+1. clear the database for the test
+2. persist n-blogs with n-posts per blog
+3. load all blogs by title and initialize all subsequent post they have (eager loading)
+4. load all posts containing the tags specified and make sure the blogs they belong to are also loaded (eager loading, so that post.getBlog() != null)
+
+### Transactional
+the same steps described unter "Non-Transactional" will be executed. every step will be wrapped by a call to "startTransaction()" and "commit()" if this is 
+supported by the driver. 
+
+for all steps the time (in ms) will be measured and a summary will be displayed at the end.
+
+## Sample Output
 
 this is what a typical run of a db evaluation looks like
 
