@@ -22,8 +22,8 @@ public class TestConfig {
 	private static final String SYSTEM_PROPERTY_BLOGS = "blogs";
 	private static final String SYSTEM_PROPERTY_POSTS = "posts";
 	private static final String SYSTEM_PROPERTY_DUMP_INFO = "printCapturedInfo";
-	private static final int NUMBER_OF_POSTS = 10000;
-	private static final int NUMBER_OF_BLOGS = 10;
+	private static final int NUMBER_OF_POSTS = 10;
+	private static final int NUMBER_OF_BLOGS = 1;
 
 	/**
 	 * @return the number of blogs to be created, subclasses are free to
