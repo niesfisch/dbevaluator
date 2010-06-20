@@ -4,6 +4,8 @@ this project was born out of the idea to get some useful java samples for the co
 available on the market. it doesn't want to show you the perfect java code. just some typical samples
 that should get you up and running quickly.
 
+![xxxxxxxxxxxx](http://marcel-sauer.de/dbevaluator/uml.png)
+
 it shows how to connect with different drivers to different data stores. for all of the examples you'll
 need the datastore running unless it's an embedded one (like  neo4j) which will be started during app runtime.
 
