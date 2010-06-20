@@ -58,7 +58,7 @@ for all steps the time (in ms) will be measured and a summary will be displayed 
 
 this is what a typical run of a db evaluation looks like
 
-    $ mvn clean install -DargLine="-Dblogs=1 -Dposts=10 -DprintCapturedInfo=false"
+    ~/dbevaluator/mongo-java-driver/$ mvn clean install -DargLine="-Dblogs=1 -Dposts=10 -DprintCapturedInfo=false"
     
     -------------------------------------------------------  
      T E S T S  
