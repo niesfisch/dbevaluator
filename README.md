@@ -4,7 +4,7 @@ this project was born out of the idea to get some useful java samples for the co
 available on the market. it is all based around some trivial tasks that the database/driver combination under test has to execute sequentially.
 it is by no means intended to show you the best java code :) - just some simple code to get someone started with a database/driver combination.
 
-## this what the uml of the "simple blog" looks like
+## UML of the "simple blog"
 
 ![blog and posts uml](http://marcel-sauer.de/dbevaluator/uml.png)
 
