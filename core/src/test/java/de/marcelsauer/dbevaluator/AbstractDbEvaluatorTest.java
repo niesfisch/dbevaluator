@@ -45,11 +45,12 @@ public abstract class AbstractDbEvaluatorTest {
 	public abstract DbEvaluation createDbEvaluation() throws Exception;
 
 	// this would be injected via DI management in a real app :)
-	private final CapturingLogCallback logCallback = new CapturingLogCallback();
+	private LogCallback logCallback;
 	private final TestConfig testConfig = new TestConfig();
 
 	@Test
 	public void runSingleEvaluation() throws Exception {
+		initLogCallback();
 		TimedDbEvaluation timedEvaluation = getTimedEvaluationToRun();
 		timedEvaluation.run();
 		resultsFor(timedEvaluation);
@@ -70,7 +71,8 @@ public abstract class AbstractDbEvaluatorTest {
 		System.out.println("total time taken (ms): " + totalTimeTakenInMillis);
 		for (Result result : results) {
 			if (result.operationNotSupported()) {
-				System.out.println("operation '" + result.operationPerformed + "' not supported. reason: " + result.ex.getMessage());
+				System.out.println("operation '" + result.operationPerformed + "' not supported. reason: "
+						+ result.ex.getMessage());
 			} else {
 				System.out.println(String.format("action performed: %s in %s (ms)", result.operationPerformed,
 						result.durationMillis));
@@ -96,7 +98,7 @@ public abstract class AbstractDbEvaluatorTest {
 	private void dumpCapturedOutput() {
 		if (testConfig.shouldDumpCapturedOutput()) {
 			System.out.println("captured output during runtime:");
-			for (String toLog : logCallback.getCaptured()) {
+			for (String toLog : ((CapturingLogCallback) logCallback).getCaptured()) {
 				System.out.println(toLog);
 			}
 		}
@@ -115,6 +117,11 @@ public abstract class AbstractDbEvaluatorTest {
 		DbEvaluation[] evaluations = new DbEvaluation[] { evaluation };
 		TimedDbEvaluation timedEvaluation = new TimedDbEvaluation(evaluations, stopWatch, logCallback, blogs);
 		return timedEvaluation;
+	}
+
+	private void initLogCallback() {
+		this.logCallback = ((testConfig.shouldDumpCapturedOutput()) ? new CapturingLogCallback()
+				: new NoOpLogCallback());
 	}
 
 	private Collection<Blog> createBlogs() {

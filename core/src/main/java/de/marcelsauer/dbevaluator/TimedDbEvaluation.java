@@ -35,6 +35,8 @@ import de.marcelsauer.dbevaluator.model.Blog;
  */
 public class TimedDbEvaluation {
 
+	private static final String[] TAGS = {"first tag", "second tag"};
+
 	private static final Log log = LogFactory.getLog(TimedDbEvaluation.class);
 
 	private final StopWatch stopWatch;
@@ -90,7 +92,7 @@ public class TimedDbEvaluation {
 		execute(new Clear(evaluation), results);
 		execute(new Persist(evaluation, blogs), results);
 		execute(new LoadByBlogTitle(evaluation, extractTitles()), results);
-		execute(new LoadByTags(evaluation, "the first tag"), results);
+		execute(new LoadByTags(evaluation, TAGS), results);
 	}
 
 	private void runTransactional(DbEvaluation evaluation, Collection<Result> results) {
@@ -98,7 +100,7 @@ public class TimedDbEvaluation {
 		execute(new TxDecorator(new Clear(wrapper)), results);
 		execute(new TxDecorator(new Persist(wrapper, blogs)), results);
 		execute(new TxDecorator(new LoadByBlogTitle(wrapper, extractTitles())), results);
-		execute(new TxDecorator(new LoadByTags(wrapper, "the first tag")), results);
+		execute(new TxDecorator(new LoadByTags(wrapper, TAGS)), results);
 	}
 
 	private void execute(Command command, Collection<Result> results) {
@@ -135,6 +137,4 @@ public class TimedDbEvaluation {
 			return ex != null;
 		}
 	}
-
-	// ************* all supported commands
 }

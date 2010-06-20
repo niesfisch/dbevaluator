@@ -76,7 +76,20 @@ public class MongoDbEvaluation implements DbEvaluation {
 
 	@Override
 	public Collection<Post> findPostsWithTags(String... tags) throws UnsupportedOperationException {
-		return mongoDao.findPostsWithTags(tags);
+		String concatenatedTags = "";
+		for(String tag : tags){
+			concatenatedTags += tag + ",";
+		}
+		log.log("trying to load posts with tags: '" + concatenatedTags.replaceAll(",$", "") + "'");
+		Collection<Post> posts = mongoDao.findPostsWithTags(tags);
+
+		log.push("     ");
+		for (Post post : posts) {
+			log.log("loaded post with content '" + post.content + "'");
+		}
+		log.pop();
+
+		return posts;
 	}
 
 	@Override

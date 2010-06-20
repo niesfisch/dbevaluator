@@ -1,5 +1,6 @@
 package de.marcelsauer.dbevaluator.mongo.javadriver;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.Validate;
@@ -94,14 +95,24 @@ public class MongoDbBlogDao implements BlogDao {
 
 	@Override
 	public Collection<Post> findPostsWithTags(String... tags) {
-		DBCollection blogs = getBlogs();
-		DBObject matcher = new BasicDBObject(Constants.TAGS, tags);
-		DBCursor cur = blogs.find(matcher);
+		Collection<Blog> blogs = new ArrayList<Blog>();
+		DBCollection blogsFromDb = getBlogs();
+		// db.blogs.find({"posts.tags":{$in:["first tag","second tag"]}}).count()
+		DBObject matcher = new BasicDBObject(Constants.POSTS_KEY + "." + Constants.TAGS, new BasicDBObject("$in", tags));
+		DBCursor cur = blogsFromDb.find(matcher);
 		while (cur.hasNext()) {
 			DBObject next = cur.next();
+			blogs.add(fromMongo.toBlog(next));
 		}
-		return null;
-		// return (blog != null) ? fromMongo.toBlog(blog) : null;
+		return mapToPosts(blogs);
+	}
+
+	private Collection<Post> mapToPosts(Collection<Blog> blogs) {
+		Collection<Post> posts = new ArrayList<Post>();
+		for (Blog blog : blogs) {
+			posts.addAll(blog.posts);
+		}
+		return posts;
 	}
 
 	public void clearCollection(String string) {
