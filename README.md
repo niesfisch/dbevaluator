@@ -61,16 +61,20 @@ this is what a typical run of a db evaluation looks like
     -------------------------------------------------------  
      T E S T S  
     -------------------------------------------------------  
-    Running de.marcelsauer.dbevaluator.mongo.javadriver.MongoDbEvaluatorTest  
-    2010-06-08 20:05:48,942 [DEBUG] TimedDbEvaluation:  running MongoDbEvaluation evaluation  
-    2010-06-08 20:05:49,097 [DEBUG] TimedDbEvaluation:  finished  MongoDbEvaluation in 3 (ms)  
-    ---------------------------------------------------------------------  
-    total number of blogs processed: 1  
-    total number of posts processed: 10 (1 * 10)  
-    total time taken (ms): 149  
-    action performed: clearing all blogs in 131 (ms)  
-    action performed: persisting in 6 (ms)  
-    action performed: loading by blog title in 9 (ms)  
-    action performed: loading by tags in 3 (ms)  
+    Running de.marcelsauer.dbevaluator.mongo.javadriver.MongoDbEvaluatorTest
+    2010-06-20 16:54:50,994 [DEBUG] TimedDbEvaluation:  running MongoDbEvaluation evaluation
+    2010-06-20 16:54:51,692 [DEBUG] TimedDbEvaluation:  finished  MongoDbEvaluation
+    ---------------------------------------------------------------------
+    total number of blogs processed: 1
+    total number of posts processed: 10 (1 * 10)
+    total time taken (ms): 692
+    action performed: clearing all blogs in 622 (ms)
+    action performed: persisting in 21 (ms)
+    action performed: loading by blog title in 45 (ms)
+    action performed: loading by tags in 4 (ms)
+    operation 'clearing all blogs transactional' not supported. reason: transactions are not supported by Mongo DB
+    operation 'persisting transactional' not supported. reason: transactions are not supported by Mongo DB
+    operation 'loading by blog title transactional' not supported. reason: transactions are not supported by Mongo DB
+    operation 'loading by tags transactional' not supported. reason: transactions are not supported by Mongo DB
     ---------------------------------------------------------------------  
 
