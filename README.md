@@ -80,3 +80,10 @@ this is what a typical run of a db evaluation looks like
     operation 'loading by tags transactional' not supported. reason: transactions are not supported by Mongo DB
     ---------------------------------------------------------------------  
 
+## Notes
+
+UML created with
+
+http://yuml.me/diagram/scruffy/class/%5BBlog|id;title;posts{bg:orange}]++1-0..*%3E[Post|author;headline;content;date;blog;tags{bg:green}].png
+
+
